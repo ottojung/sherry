@@ -14,10 +14,10 @@
 
 (cond-expand
  (guile
-  (define-module (my-fix-imports)
+  (define-module (sherry my-fix-imports)
     :use-module ((euphrates current-program-path-p) :select (current-program-path/p))
     :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
-    :use-module ((lib scheme-imports) :select (czempak-main do-initialize-stdlib-exports file-read-first-expression guile-main is-guile-decl? r7rs-main))
+    :use-module ((sherry scheme-imports) :select (czempak-main do-initialize-stdlib-exports file-read-first-expression guile-main is-guile-decl? r7rs-main))
     )))
 
 (parameterize ((current-program-path/p "my-fix-imports"))
