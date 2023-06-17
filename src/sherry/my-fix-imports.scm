@@ -31,7 +31,8 @@
     )
 
    (when --help
-     (define-cli:show-help))
+     (define-cli:show-help)
+     (exit 0))
 
    (when initialize-stdlib-exports
      (do-initialize-stdlib-exports <root> (or <files...>* '()))
