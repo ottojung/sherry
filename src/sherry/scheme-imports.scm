@@ -14,7 +14,7 @@
 
 (cond-expand
  (guile
-  (define-module (lib scheme-imports)
+  (define-module (sherry scheme-imports)
     :export (r7rs-main guile-main czempak-main file-read-first-expression do-initialize-stdlib-exports is-guile-decl?)
     :use-module ((euphrates absolute-posix-path-q) :select (absolute-posix-path?))
     :use-module ((euphrates append-posix-path) :select (append-posix-path))
