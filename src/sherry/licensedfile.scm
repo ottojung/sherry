@@ -57,19 +57,22 @@
 
 (define (parse-licensedfile-lines lines)
   (define-values
-      (prelicense-content/0 after-prelicense/0)
+      (prelicense-content/0 after-prelicense-content/0)
     (list-span-while
      (fn-pair
       (i line)
-      (or (and (equal? i 0)
-               (shebang-line? line))
-          (string-null-or-whitespace? line)))
+      (and (equal? i 0)
+           (shebang-line? line)))
      (map cons
           (range (length lines))
           lines)))
 
-  (define prelicense-content (map cdr prelicense-content/0))
-  (define after-prelicense (map cdr after-prelicense/0))
+  (define prelicense-content/1 (map cdr prelicense-content/0))
+  (define after-prelicense-content/1 (map cdr after-prelicense-content/0))
+
+  (define-values
+      (prelicense-whitespace after-prelicense)
+    (list-span-while string-null-or-whitespace? after-prelicense-content/1))
 
   (define-values
       (license-header-line after-license-header)
@@ -81,7 +84,7 @@
               (values #f after-prelicense)))))
 
   (define-values
-      (license-text after-license)
+      (license-text after-license/0)
     (list-span-while license-line? after-license-header))
 
   (define license
@@ -89,10 +92,17 @@
          (parse-license-from-lines
           (cons license-header-line license-text))))
 
-  (make-licensedfile
-   prelicense-content
-   license
-   after-license))
+  (if license
+      (make-licensedfile
+       (append prelicense-content/1
+               prelicense-whitespace)
+       license
+       after-license/0)
+      (make-licensedfile
+       prelicense-content/1
+       license
+       (append prelicense-whitespace
+               after-license/0))))
 
 (define display-licensedfile
   (case-lambda
