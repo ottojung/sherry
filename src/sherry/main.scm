@@ -15,8 +15,11 @@
 
 (define-module (sherry main)
   :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
+  :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
   :use-module ((euphrates raisu) :select (raisu))
+  :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
+  :use-module ((sherry update-file-license) :select (update-file-license))
   )
 
 (define (main)
@@ -24,6 +27,8 @@
    (MAIN
     MAIN : --help
     /      infer file license DASH? <filepath>
+    /      update file license DASH? <filepath>
+    /      get file modification years DASH? <filepath>
     DASH : --
     )
 
@@ -31,9 +36,17 @@
      (define-cli:show-help)
      (exit 0))
 
+   (when <filepath>
+     (unless (file-or-directory-exists? <filepath>)
+       (raisu 'target-file-does-not-exist)))
+
    (cond
     ((and infer file license)
      (infer-file-license/print <filepath>))
+    ((and update file license)
+     (update-file-license <filepath>))
+    ((and get file modification years)
+     (get-file-modification-years/print <filepath>))
     (else
      (raisu 'unrecognized-cli-args
             "What are these CLI options?!")))))
