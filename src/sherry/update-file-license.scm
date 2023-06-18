@@ -34,6 +34,7 @@
         (lambda (p)
           (display-licensedfile new-licensedfile p))))))
 
+
 (define (update-file-license filepath)
   (define licensedfile
     (parse-licensedfile filepath))
@@ -51,7 +52,7 @@
     (license-years current-license))
 
   (define modification-years
-    (get-file-modification-years))
+    (get-file-modification-years filepath))
 
   (define not-included-years
     (filter (lambda (y) (not (year-in-years? y years)))
