@@ -14,14 +14,15 @@
 
 
 (define-module (sherry licensedfile)
-  :export (parse-licensedfile licensedfile-license)
+  :export (parse-licensedfile parse-licensedfile-lines licensedfile-license)
   :use-module ((euphrates define-type9) :select (define-type9))
   :use-module ((euphrates fn-pair) :select (fn-pair))
   :use-module ((euphrates irregex) :select (irregex-match sre->irregex))
   :use-module ((euphrates list-span-while) :select (list-span-while))
   :use-module ((euphrates range) :select (range))
+  :use-module ((euphrates read-lines) :select (read/lines))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
-  :use-module ((sherry license) :select (parse-license-from-lines))
+  :use-module ((sherry license) :select (license-text parse-license-from-lines))
   :use-module ((sherry shebang-line-huh) :select (shebang-line?))
   )
 
@@ -50,8 +51,10 @@
     (lambda (line)
       (irregex-match r line))))
 
+(define (parse-licensedfile filepath)
+  (parse-licensedfile-lines (read/lines filepath)))
 
-(define (parse-licensedfile lines)
+(define (parse-licensedfile-lines lines)
   (define-values
       (prelicense-content/0 after-prelicense/0)
     (list-span-while

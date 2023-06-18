@@ -16,7 +16,7 @@
 (define-module (sherry main)
   :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
   :use-module ((euphrates raisu) :select (raisu))
-  :use-module ((sherry infer-file-license) :select (infer-file-license))
+  :use-module ((sherry infer-file-license) :select (infer-file-license/print))
   )
 
 (define (main)
@@ -33,7 +33,7 @@
 
    (cond
     ((and infer file license)
-     (infer-file-license <filepath>))
+     (infer-file-license/print <filepath>))
     (else
      (raisu 'unrecognized-cli-args
             "What are these CLI options?!")))))

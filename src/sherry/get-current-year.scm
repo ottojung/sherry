@@ -13,16 +13,12 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-(define-module (sherry log)
-  :export (log-info log-error)
-  :use-module ((euphrates dprintln) :select (dprintln))
+(define-module (sherry get-current-year)
+  :export (get-current-year)
+  :use-module ((euphrates date-get-current-string) :select (date-get-current-string))
   )
 
 
-(define (log-info fmt . args)
-  (apply dprintln (cons fmt args)))
-
-
-(define (log-error fmt . args)
-  (parameterize ((current-output-port (current-error-port)))
-    (apply dprintln (cons fmt args))))
+(define (get-current-year)
+  (string->number
+   (date-get-current-string "~Y")))

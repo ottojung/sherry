@@ -12,20 +12,40 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 (define-module (sherry infer-file-license)
-  :export (infer-file-license)
+  :export (infer-file-license infer-file-license/print)
+  :use-module ((euphrates compose-under-seq) :select (compose-under-seq))
+  :use-module ((euphrates debugs) :select (debugs))
+  :use-module ((euphrates directory-files) :select (directory-files))
+  :use-module ((euphrates list-map-first) :select (list-map-first))
   :use-module ((euphrates negate) :select (negate))
+  :use-module ((euphrates path-get-dirname) :select (path-get-dirname))
   :use-module ((euphrates read-lines) :select (read/lines))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
-  :use-module ((sherry licensedfile) :select (licensedfile-license parse-licensedfile))
-  :use-module ((sherry log) :select (log-info))
+  :use-module ((sherry get-current-year) :select (get-current-year))
+  :use-module ((sherry license) :select (display-license license-author license-text make-license))
+  :use-module ((sherry licensedfile) :select (licensedfile-license parse-licensedfile parse-licensedfile-lines))
+  :use-module ((sherry log) :select (log-error log-info))
   )
 
 
 (define (infer-from-neighbours filepath)
-  (log-info "Trying to infer the license from the neighbours of ~s." filepath)
-  0)
+  (define _1
+    (log-info "Trying to infer the license from the neighbours of ~s." filepath))
+  (debugs (path-get-dirname filepath))
+  (define neighbours
+    (map car (directory-files (path-get-dirname filepath))))
+  (debugs neighbours)
+  (define found
+    (list-map-first
+     (compose-under-seq and parse-licensedfile licensedfile-license)
+     #f neighbours))
+  (debugs found)
+  (and found
+       (make-license
+        (list (get-current-year))
+        (license-author found)
+        (license-text found))))
 
 
 (define (infer-file-license filepath)
@@ -36,8 +56,15 @@
         (log-info "The file ~s appears empty." filepath)
         (infer-from-neighbours filepath))
       (let ()
-        (define parsed (parse-licensedfile lines))
+        (define parsed (parse-licensedfile-lines lines))
         (or (licensedfile-license parsed)
             (let ()
               (log-info "The file ~s appears to not have an existing license." filepath)
               (infer-from-neighbours filepath))))))
+
+
+(define (infer-file-license/print filepath)
+  (define inferred (infer-file-license filepath))
+  (if inferred
+      (display-license inferred)
+      (log-error "Could not infer the license.")))
