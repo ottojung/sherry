@@ -27,9 +27,10 @@
    (MAIN
     MAIN : --help
     /      infer file license DASH? <filepath>
-    /      update file license DASH? <filepath>
+    /      update file license IFEXISTS? DASH? <filepath>
     /      get file modification years DASH? <filepath>
     DASH : --
+    IFEXISTS : --if-exists
     )
 
    (when --help
@@ -44,7 +45,7 @@
     ((and infer file license)
      (infer-file-license/print <filepath>))
     ((and update file license)
-     (update-file-license/overwrite <filepath>))
+     (update-file-license/overwrite --if-exists <filepath>))
     ((and get file modification years)
      (get-file-modification-years/print <filepath>))
     (else

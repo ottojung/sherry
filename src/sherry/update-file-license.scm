@@ -24,14 +24,16 @@
   )
 
 
-(define (update-file-license/overwrite filepath)
+(define (update-file-license/overwrite --if-exists filepath)
   (define-values (up-to-date? license-exists? new-licensedfile)
     (update-file-license filepath))
   (unless (and up-to-date? license-exists?)
-    (call-with-output-file
-        filepath
-      (lambda (p)
-        (display-licensedfile new-licensedfile p)))))
+    (when (or (and --if-exists license-exists?)
+              (not --if-exists))
+      (call-with-output-file
+          filepath
+        (lambda (p)
+          (display-licensedfile new-licensedfile p))))))
 
 (define (update-file-license filepath)
   (define licensedfile
