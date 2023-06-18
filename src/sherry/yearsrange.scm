@@ -12,18 +12,14 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-(define-module (sherry log)
-  :export (log-info log-error)
-  :use-module ((euphrates dprintln) :select (dprintln))
+(define-module (sherry yearsrange)
+  :export (make-yearsrange yearsrange? yearsrange-start yearsrange-end)
+  :use-module ((euphrates define-type9) :select (define-type9))
   )
 
 
-(define (log-info fmt . args)
-  (parameterize ((current-output-port (current-error-port)))
-    (apply dprintln (cons fmt args))))
-
-
-(define (log-error fmt . args)
-  (parameterize ((current-output-port (current-error-port)))
-    (apply dprintln (cons fmt args))))
+(define-type9 <yearsrange>
+  (make-yearsrange start end) yearsrange?
+  (start yearsrange-start)
+  (end yearsrange-end)
+  )

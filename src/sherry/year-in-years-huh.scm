@@ -12,18 +12,17 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-(define-module (sherry log)
-  :export (log-info log-error)
-  :use-module ((euphrates dprintln) :select (dprintln))
+(define-module (sherry year-in-years-huh)
+  :export (year-in-years?)
+  :use-module ((euphrates list-find-first) :select (list-find-first))
+  :use-module ((sherry yearsrange) :select (yearsrange-end yearsrange-start yearsrange?))
   )
 
+(define (year-in-years? year years)
+  (define (included-in? x)
+    (or (equal? year x)
+        (and (yearsrange? x)
+             (>= year (yearsrange-start x))
+             (<= year (yearsrange-end x)))))
 
-(define (log-info fmt . args)
-  (parameterize ((current-output-port (current-error-port)))
-    (apply dprintln (cons fmt args))))
-
-
-(define (log-error fmt . args)
-  (parameterize ((current-output-port (current-error-port)))
-    (apply dprintln (cons fmt args))))
+  (list-find-first included-in? #f years))

@@ -28,13 +28,7 @@
   :use-module ((euphrates stringf) :select (stringf))
   :use-module ((euphrates tilda-a) :select (~a))
   :use-module ((euphrates words-to-string) :select (words->string))
-  )
-
-
-(define-type9 <yearsrange>
-  (make-yearsrange start end) yearsrange?
-  (years yearsrange-years)
-  (end yearsrange-end)
+  :use-module ((sherry yearsrange) :select (make-yearsrange))
   )
 
 

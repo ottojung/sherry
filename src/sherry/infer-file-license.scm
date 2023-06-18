@@ -15,7 +15,6 @@
 (define-module (sherry infer-file-license)
   :export (infer-file-license infer-file-license/print)
   :use-module ((euphrates compose-under-seq) :select (compose-under-seq))
-  :use-module ((euphrates debugs) :select (debugs))
   :use-module ((euphrates directory-files) :select (directory-files))
   :use-module ((euphrates list-map-first) :select (list-map-first))
   :use-module ((euphrates negate) :select (negate))
@@ -32,15 +31,12 @@
 (define (infer-from-neighbours filepath)
   (define _1
     (log-info "Trying to infer the license from the neighbours of ~s." filepath))
-  (debugs (path-get-dirname filepath))
   (define neighbours
     (map car (directory-files (path-get-dirname filepath))))
-  (debugs neighbours)
   (define found
     (list-map-first
      (compose-under-seq and parse-licensedfile licensedfile-license)
      #f neighbours))
-  (debugs found)
   (and found
        (make-license
         (list (get-current-year))

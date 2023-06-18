@@ -14,15 +14,16 @@
 
 
 (define-module (sherry licensedfile)
-  :export (parse-licensedfile parse-licensedfile-lines licensedfile-license)
+  :export (parse-licensedfile parse-licensedfile-lines make-licensedfile licensedfile-prelicense-content licensedfile-license licensedfile-postlicense-content display-licensedfile)
   :use-module ((euphrates define-type9) :select (define-type9))
   :use-module ((euphrates fn-pair) :select (fn-pair))
   :use-module ((euphrates irregex) :select (irregex-match sre->irregex))
+  :use-module ((euphrates lines-to-string) :select (lines->string))
   :use-module ((euphrates list-span-while) :select (list-span-while))
   :use-module ((euphrates range) :select (range))
   :use-module ((euphrates read-lines) :select (read/lines))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
-  :use-module ((sherry license) :select (license-text parse-license-from-lines))
+  :use-module ((sherry license) :select (display-license license-text parse-license-from-lines))
   :use-module ((sherry shebang-line-huh) :select (shebang-line?))
   )
 
@@ -92,3 +93,12 @@
    prelicense-content
    license
    after-license))
+
+(define display-licensedfile
+  (case-lambda
+   ((this) (display-licensedfile this (current-output-port)))
+   ((this port)
+    (parameterize ((current-output-port port))
+      (display (lines->string (licensedfile-prelicense-content this)))
+      (display-license (licensedfile-license this))
+      (display (lines->string (licensedfile-postlicense-content this)))))))

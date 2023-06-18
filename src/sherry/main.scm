@@ -12,15 +12,15 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 (define-module (sherry main)
   :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
   :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
-  :use-module ((sherry update-file-license) :select (update-file-license))
+  :use-module ((sherry update-file-license) :select (update-file-license/overwrite))
   )
+
 
 (define (main)
   (with-cli
@@ -44,11 +44,12 @@
     ((and infer file license)
      (infer-file-license/print <filepath>))
     ((and update file license)
-     (update-file-license <filepath>))
+     (update-file-license/overwrite <filepath>))
     ((and get file modification years)
      (get-file-modification-years/print <filepath>))
     (else
      (raisu 'unrecognized-cli-args
             "What are these CLI options?!")))))
+
 
 (main)
