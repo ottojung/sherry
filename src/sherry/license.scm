@@ -27,7 +27,7 @@
   :use-module ((euphrates stringf) :select (stringf))
   :use-module ((euphrates tilda-a) :select (~a))
   :use-module ((euphrates words-to-string) :select (words->string))
-  :use-module ((sherry yearsrange) :select (make-yearsrange))
+  :use-module ((sherry yearsrange) :select (make-yearsrange yearsrange-end yearsrange-start yearsrange?))
   )
 
 
@@ -107,6 +107,16 @@
        #f string-length prefixes))))
 
 
+(define (year->string year)
+  (cond
+   ((yearsrange? year)
+    (string-append (~a (yearsrange-start year))
+                   "-"
+                   (~a (yearsrange-end year))))
+   (else
+    (~a year))))
+
+
 (define display-license
   (case-lambda
    ((license) (display-license license (current-output-port)))
@@ -115,7 +125,7 @@
       (define pre (license-get-prefix license))
       (define years
         (string-join
-         (map ~a (license-years license))
+         (map year->string (license-years license))
          ", "))
 
       (display pre)
