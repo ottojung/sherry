@@ -53,7 +53,8 @@
     (get-current-year))
 
   (define up-to-date?
-    (year-in-years? current-year years))
+    (and license-exists?
+         (year-in-years? current-year years)))
 
   (cond
    ((and up-to-date? license-exists?)
