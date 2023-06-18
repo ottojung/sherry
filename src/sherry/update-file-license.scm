@@ -14,18 +14,19 @@
 
 (define-module (sherry update-file-license)
   :export (update-file-license update-file-license/overwrite)
+  :use-module ((sherry file-text) :select (display-licensedfile licensedfile-license licensedfile-postlicense-content licensedfile-prelicense-content make-licensedfile parse-licensedfile))
+  :use-module ((sherry get-current-year) :select (get-current-year))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
   :use-module ((sherry license) :select (license-author license-text license-years make-license))
-  :use-module ((sherry licensedfile) :select (display-licensedfile licensedfile-license licensedfile-postlicense-content licensedfile-prelicense-content make-licensedfile parse-licensedfile))
   :use-module ((sherry log) :select (log-info))
   :use-module ((sherry year-in-years-huh) :select (year-in-years?))
   )
 
 
-(define (update-file-license/overwrite --if-exists filepath)
+(define (update-file-license/overwrite --if-exists --all-years filepath)
   (define-values (up-to-date? license-exists? new-licensedfile)
-    (update-file-license filepath))
+    (update-file-license --all-years filepath))
   (unless (and up-to-date? license-exists?)
     (when (or (and --if-exists license-exists?)
               (not --if-exists))
@@ -35,7 +36,7 @@
           (display-licensedfile new-licensedfile p))))))
 
 
-(define (update-file-license filepath)
+(define (update-file-license --all-years filepath)
   (define licensedfile
     (parse-licensedfile filepath))
 
@@ -51,8 +52,16 @@
   (define years
     (license-years current-license))
 
-  (define modification-years
+  (define modification-years/0
     (get-file-modification-years filepath))
+
+  (define current-year
+    (get-current-year))
+
+  (define modification-years
+    (if --all-years
+        modification-years/0
+        (filter (lambda (year) (equal? year current-year)) modification-years/0)))
 
   (define not-included-years
     (filter (lambda (y) (not (year-in-years? y years)))

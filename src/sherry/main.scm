@@ -27,11 +27,16 @@
    (MAIN
     MAIN : --help
     /      infer file license DASH? <filepath>
-    /      update file license IFEXISTS? DASH? <filepath>
+    /      update file license UPDATEOPT* DASH? <filepath>
     /      get file modification years DASH? <filepath>
     DASH : --
-    IFEXISTS : --if-exists
+    UPDATEOPT : --if-exists
+    /           --all-years
+    /           --just-current-year
     )
+
+   :default (--just-current-year #t)
+   :exclusive (--just-current-year --all-years)
 
    (when --help
      (define-cli:show-help)
@@ -45,7 +50,7 @@
     ((and infer file license)
      (infer-file-license/print <filepath>))
     ((and update file license)
-     (update-file-license/overwrite --if-exists <filepath>))
+     (update-file-license/overwrite --if-exists --all-years <filepath>))
     ((and get file modification years)
      (get-file-modification-years/print <filepath>))
     (else
