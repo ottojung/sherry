@@ -18,7 +18,6 @@
   :use-module ((euphrates identity) :select (identity))
   :use-module ((euphrates irregex) :select (irregex-match-substring irregex-replace irregex-search sre->irregex))
   :use-module ((euphrates lines-to-string) :select (lines->string))
-  :use-module ((euphrates list-intersperse) :select (list-intersperse))
   :use-module ((euphrates list-maximal-element-or) :select (list-maximal-element-or))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((euphrates string-split-3) :select (string-split-3))
@@ -115,10 +114,9 @@
     (parameterize ((current-output-port port))
       (define pre (license-get-prefix license))
       (define years
-        (apply
-         string-append
-         (list-intersperse
-          ", " (map ~a (license-years license)))))
+        (string-join
+         (map ~a (license-years license))
+         ", "))
 
       (display pre)
       (display
