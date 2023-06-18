@@ -114,13 +114,16 @@
    ((license port)
     (parameterize ((current-output-port port))
       (define pre (license-get-prefix license))
+      (define years
+        (apply
+         string-append
+         (list-intersperse
+          ", " (map ~a (license-years license)))))
+
       (display pre)
       (display
        (words->string
-        (cons
-         "Copyright (C)"
-         (list-intersperse
-          "," (map ~a (license-years license))))))
+        (list "Copyright (C)" years)))
       (display "  ")
       (display (license-author license))
       (newline)
