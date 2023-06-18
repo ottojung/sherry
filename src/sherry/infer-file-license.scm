@@ -21,7 +21,7 @@
   :use-module ((euphrates path-get-dirname) :select (path-get-dirname))
   :use-module ((euphrates read-lines) :select (read/lines))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
-  :use-module ((sherry get-current-year) :select (get-current-year))
+  :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry license) :select (display-license license-author license-text make-license))
   :use-module ((sherry licensedfile) :select (licensedfile-license parse-licensedfile parse-licensedfile-lines))
   :use-module ((sherry log) :select (log-error log-info))
@@ -39,7 +39,7 @@
      #f neighbours))
   (and found
        (make-license
-        (list (get-current-year))
+        (get-file-modification-years filepath)
         (license-author found)
         (license-text found))))
 
