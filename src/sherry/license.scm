@@ -71,6 +71,8 @@
                ((and dash range-start range-end)
                 (loop (cdr rest)
                       (cons (make-yearsrange range-start range-end) years)))
+               ((string-null? striped)
+                (loop (cdr rest) years))
                (else (values years (words->string rest))))))))))
 
 
