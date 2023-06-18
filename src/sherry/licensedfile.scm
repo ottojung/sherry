@@ -18,7 +18,6 @@
   :use-module ((euphrates define-type9) :select (define-type9))
   :use-module ((euphrates fn-pair) :select (fn-pair))
   :use-module ((euphrates irregex) :select (irregex-match sre->irregex))
-  :use-module ((euphrates lines-to-string) :select (lines->string))
   :use-module ((euphrates list-span-while) :select (list-span-while))
   :use-module ((euphrates range) :select (range))
   :use-module ((euphrates read-lines) :select (read/lines))
@@ -109,6 +108,12 @@
    ((this) (display-licensedfile this (current-output-port)))
    ((this port)
     (parameterize ((current-output-port port))
-      (display (lines->string (licensedfile-prelicense-content this)))
+      (for-each
+       (lambda (line)
+         (display line) (newline))
+       (licensedfile-prelicense-content this))
       (display-license (licensedfile-license this))
-      (display (lines->string (licensedfile-postlicense-content this)))))))
+      (for-each
+       (lambda (line)
+         (display line) (newline))
+       (licensedfile-postlicense-content this))))))
