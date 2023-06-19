@@ -15,9 +15,9 @@
 (define-module (sherry update-file-license)
   :export (update-file-license update-file-license/overwrite)
   :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
+  :use-module ((sherry file-modification-years) :select (file-modification-years))
   :use-module ((sherry file-structure) :select (file-structure))
   :use-module ((sherry get-current-year) :select (get-current-year))
-  :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
   :use-module ((sherry license) :select (license-author license-text license-years make-license))
   :use-module ((sherry licensedfile) :select (display-licensedfile licensedfile-postlicense-content licensedfile-prelicense-content make-licensedfile))
@@ -55,7 +55,7 @@
     (license-years current-license))
 
   (define modification-years/0
-    (get-file-modification-years filepath))
+    (file-modification-years filepath))
 
   (define current-year
     (get-current-year))
