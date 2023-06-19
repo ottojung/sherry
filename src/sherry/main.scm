@@ -19,6 +19,7 @@
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
+  :use-module ((sherry install-guile-program) :select (install-guile-program))
   :use-module ((sherry update-file-license) :select (update-file-license/overwrite))
   )
 
@@ -30,10 +31,16 @@
     /      infer-license DASH? <filepath>
     /      update-license UPDATEOPT* DASH? <filepath>
     /      get-modification-years DASH? <filepath>
+    /      install-program INSTALLOPT+
     DASH : --
     UPDATEOPT : --if-exists
     /           --all-years
     /           --just-current-year
+    INSTALLOPT : --main <filepath-of-main...> --binary-name <binary-name...>
+    /            --project-name <project-name>
+    /            --src <dirpath-of-src>
+    /            --prefix-share <prefix-share>
+    /            --prefix-bin <prefix-bin>
     )
 
    :default (--just-current-year #t)
@@ -56,6 +63,13 @@
       (update-file-license/overwrite --if-exists --all-years <filepath>))
      (get-modification-years
       (get-file-modification-years/print <filepath>))
+     (install-guile-program
+      (install-guile-program
+       (map cons <binary-name...> <filepath-of-main...>)
+       <project-name>
+       <dirpath-of-src>
+       <prefix-share>
+       <prefix-bin>))
      (else
       (raisu 'unrecognized-cli-args
              "What are these CLI options?!"))))))
