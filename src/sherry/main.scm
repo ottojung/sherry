@@ -13,6 +13,7 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (sherry main)
+  :use-module ((euphrates current-program-path-p) :select (current-program-path/p))
   :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
   :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
   :use-module ((euphrates properties) :select (with-properties))
@@ -75,4 +76,5 @@
              "What are these CLI options?!"))))))
 
 
-(main)
+(parameterize ((current-program-path/p "sherry"))
+  (main))
