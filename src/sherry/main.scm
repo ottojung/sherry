@@ -31,7 +31,7 @@
     /      infer-license DASH? <filepath>
     /      update-license UPDATEOPT* DASH? <filepath>
     /      get-modification-years DASH? <filepath>
-    /      install-program INSTALLOPT+
+    /      install-program INSTALLOPT*
     DASH : --
     UPDATEOPT : --if-exists
     /           --all-years
@@ -65,7 +65,7 @@
       (get-file-modification-years/print <filepath>))
      (install-guile-program
       (install-guile-program
-       (map cons <binary-name...> <filepath-of-main...>)
+       (map cons (or <binary-name...> '()) (or <filepath-of-main...> '()))
        <project-name>
        <dirpath-of-src>
        <prefix-share>
