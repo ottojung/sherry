@@ -33,6 +33,7 @@
     /      update-license UPDATEOPT* DASH? <filepath>
     /      get-modification-years DASH? <filepath>
     /      install-program INSTALLOPT*
+    /      --version
     DASH : --
     UPDATEOPT : --if-exists
     /           --all-years
@@ -44,11 +45,17 @@
     /            --prefix-bin <prefix-bin>
     )
 
+   :synonym (--version -v version)
+
    :default (--just-current-year #t)
    :exclusive (--just-current-year --all-years)
 
    (when --help
      (define-cli:show-help)
+     (exit 0))
+
+   (when --version
+     (display "0.1") (newline)
      (exit 0))
 
    (when <filepath>
