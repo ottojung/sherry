@@ -18,10 +18,11 @@
   :use-module ((euphrates define-type9) :select (define-type9))
   :use-module ((euphrates fn-pair) :select (fn-pair))
   :use-module ((euphrates irregex) :select (irregex-match sre->irregex))
+  :use-module ((euphrates lines-to-string) :select (lines->string))
   :use-module ((euphrates list-span-while) :select (list-span-while))
   :use-module ((euphrates range) :select (range))
-  :use-module ((euphrates read-lines) :select (read/lines))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
+  :use-module ((sherry file-lines) :select (file-lines))
   :use-module ((sherry license) :select (display-license license-text parse-license-from-lines))
   :use-module ((sherry shebang-line-huh) :select (shebang-line?))
   )
@@ -52,7 +53,7 @@
       (irregex-match r line))))
 
 (define (parse-licensedfile filepath)
-  (parse-licensedfile-lines (read/lines filepath)))
+  (parse-licensedfile-lines (file-lines filepath)))
 
 (define (parse-licensedfile-lines lines)
   (define-values
@@ -113,7 +114,6 @@
          (display line) (newline))
        (licensedfile-prelicense-content this))
       (display-license (licensedfile-license this))
-      (for-each
-       (lambda (line)
-         (display line) (newline))
-       (licensedfile-postlicense-content this))))))
+      (display
+       (lines->string
+        (licensedfile-postlicense-content this)))))))

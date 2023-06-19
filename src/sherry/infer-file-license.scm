@@ -19,8 +19,8 @@
   :use-module ((euphrates list-map-first) :select (list-map-first))
   :use-module ((euphrates negate) :select (negate))
   :use-module ((euphrates path-get-dirname) :select (path-get-dirname))
-  :use-module ((euphrates read-lines) :select (read/lines))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
+  :use-module ((sherry file-lines) :select (file-lines))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry license) :select (display-license license-author license-text make-license))
   :use-module ((sherry licensedfile) :select (licensedfile-license parse-licensedfile parse-licensedfile-lines))
@@ -45,7 +45,7 @@
 
 
 (define (infer-file-license filepath)
-  (define lines (read/lines filepath))
+  (define lines (file-lines filepath))
   (define non-empty (filter (negate string-null-or-whitespace?) lines))
   (if (null? non-empty)
       (let ()

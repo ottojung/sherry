@@ -15,6 +15,7 @@
 (define-module (sherry main)
   :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
   :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
+  :use-module ((euphrates properties) :select (with-properties))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
@@ -26,9 +27,9 @@
   (with-cli
    (MAIN
     MAIN : --help
-    /      infer file license DASH? <filepath>
-    /      update file license UPDATEOPT* DASH? <filepath>
-    /      get file modification years DASH? <filepath>
+    /      infer-license DASH? <filepath>
+    /      update-license UPDATEOPT* DASH? <filepath>
+    /      get-modification-years DASH? <filepath>
     DASH : --
     UPDATEOPT : --if-exists
     /           --all-years
@@ -46,16 +47,18 @@
      (unless (file-or-directory-exists? <filepath>)
        (raisu 'target-file-does-not-exist)))
 
-   (cond
-    ((and infer file license)
-     (infer-file-license/print <filepath>))
-    ((and update file license)
-     (update-file-license/overwrite --if-exists --all-years <filepath>))
-    ((and get file modification years)
-     (get-file-modification-years/print <filepath>))
-    (else
-     (raisu 'unrecognized-cli-args
-            "What are these CLI options?!")))))
+   (with-properties
+    :for-everything
+    (cond
+     (infer-license
+      (infer-file-license/print <filepath>))
+     (update-license
+      (update-file-license/overwrite --if-exists --all-years <filepath>))
+     (get-modification-years
+      (get-file-modification-years/print <filepath>))
+     (else
+      (raisu 'unrecognized-cli-args
+             "What are these CLI options?!"))))))
 
 
 (main)

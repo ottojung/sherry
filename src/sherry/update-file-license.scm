@@ -14,11 +14,13 @@
 
 (define-module (sherry update-file-license)
   :export (update-file-license update-file-license/overwrite)
-  :use-module ((sherry file-text) :select (display-licensedfile licensedfile-license licensedfile-postlicense-content licensedfile-prelicense-content make-licensedfile parse-licensedfile))
+  :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
+  :use-module ((sherry file-structure) :select (file-structure))
   :use-module ((sherry get-current-year) :select (get-current-year))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
   :use-module ((sherry license) :select (license-author license-text license-years make-license))
+  :use-module ((sherry licensedfile) :select (display-licensedfile licensedfile-postlicense-content licensedfile-prelicense-content make-licensedfile))
   :use-module ((sherry log) :select (log-info))
   :use-module ((sherry year-in-years-huh) :select (year-in-years?))
   )
@@ -38,10 +40,10 @@
 
 (define (update-file-license --all-years filepath)
   (define licensedfile
-    (parse-licensedfile filepath))
+    (file-structure filepath))
 
   (define license-exists?
-    (licensedfile-license licensedfile))
+    (file-license-exists? filepath))
 
   (unless license-exists?
     (log-info "Target file ~s does not have a license header" filepath))
