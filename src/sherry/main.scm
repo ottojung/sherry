@@ -35,6 +35,7 @@
     /      update-license UPDATEOPT* DASH? <filepath>
     /      get-modification-years DASH? <filepath>
     /      get-dependencies DASH? <filepath>
+    /      get-exports DASH? <filepath>
     /      get-source-type DASH? <filepath>
     /      install-program INSTALLOPT*
     /      --version
@@ -77,6 +78,8 @@
       (get-file-modification-years/print <filepath>))
      (get-dependencies
       (get-file-dependencies/print <filepath>))
+     (get-exports
+      (get-file-exports/print <filepath>))
      (get-source-type
       (get-file-source-type/print <filepath>))
      (install-guile-program
