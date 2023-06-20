@@ -18,7 +18,9 @@
   :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
   :use-module ((euphrates properties) :select (with-properties))
   :use-module ((euphrates raisu) :select (raisu))
+  :use-module ((sherry get-file-dependencies) :select (get-file-dependencies/print))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
+  :use-module ((sherry get-file-source-type) :select (get-file-source-type/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
   :use-module ((sherry install-guile-program) :select (install-guile-program))
   :use-module ((sherry update-file-license) :select (update-file-license/overwrite))
@@ -32,6 +34,8 @@
     /      infer-license DASH? <filepath>
     /      update-license UPDATEOPT* DASH? <filepath>
     /      get-modification-years DASH? <filepath>
+    /      get-dependencies DASH? <filepath>
+    /      get-source-type DASH? <filepath>
     /      install-program INSTALLOPT*
     /      --version
     DASH : --
@@ -71,6 +75,10 @@
       (update-file-license/overwrite --if-exists --all-years <filepath>))
      (get-modification-years
       (get-file-modification-years/print <filepath>))
+     (get-dependencies
+      (get-file-dependencies/print <filepath>))
+     (get-source-type
+      (get-file-source-type/print <filepath>))
      (install-guile-program
       (install-guile-program
        (map cons (or <binary-name...> '()) (or <filepath-of-main...> '()))
