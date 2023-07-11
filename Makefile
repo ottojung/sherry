@@ -25,7 +25,7 @@ install: build
 		--prefix-share $(PREFIXSHARE) \
 		--prefix-bin $(PREFIXBIN) \
 
-test: $(SUBMODULES)
+test: build
 	sh scripts/run-tests.sh
 
 $(SUBMODULES):
