@@ -12,12 +12,17 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (sherry is-guile-file-huh)
-  :export (is-guile-file?)
-  :use-module ((sherry file-first-expression) :select (file-first-expression))
-  :use-module ((sherry is-guile-decl-huh) :select (is-guile-decl?))
+(define-module (sherry r7rsdecl)
+  :export (make-r7rsdecl r7rsdecl-keyword r7rsdecl-signature r7rsdecl-exports r7rsdecl-imports r7rsdecl-other)
+  :use-module ((euphrates define-type9) :select (define-type9))
   )
 
-(define (is-guile-file? <filepath>)
-  (define first (file-first-expression <filepath>))
-  (is-guile-decl? first))
+(define-type9 <r7rsdecl>
+  (make-r7rsdecl keyword signature exports imports other) r7rsdecl?
+  (keyword r7rsdecl-keyword)
+  (signature r7rsdecl-signature)
+  (exports r7rsdecl-exports)
+  (imports r7rsdecl-imports)
+  (other r7rsdecl-other)
+  ;; there may be other fields
+  )

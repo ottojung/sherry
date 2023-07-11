@@ -15,7 +15,7 @@
 (cond-expand
  (guile
   (define-module (sherry scheme-imports)
-    :export (r7rs-main guile-main czempak-main do-initialize-stdlib-exports is-guile-decl?)
+    :export (r7rs-main guile-main czempak-main do-initialize-stdlib-exports)
     :use-module ((euphrates absolute-posix-path-q) :select (absolute-posix-path?))
     :use-module ((euphrates append-posix-path) :select (append-posix-path))
     :use-module ((euphrates assq-or) :select (assq-or))
@@ -64,8 +64,10 @@
     :use-module ((euphrates write-string-file) :select (write-string-file))
     :use-module ((sherry file-read-first-expression) :select (file-read-first-expression))
     :use-module ((sherry get-guile-module) :select (get-guile-module))
+    :use-module ((sherry is-guile-decl-huh) :select (is-guile-decl?))
     :use-module ((sherry is-guile-file-huh) :select (is-guile-file?))
     :use-module ((sherry is-guile-module-definition-huh) :select (is-guile-module-definition?))
+    :use-module ((sherry is-r7rsdecl-decl-huh) :select (is-r7rsdecl-decl?))
     )))
 
 (use-modules (ice-9 rdelim))

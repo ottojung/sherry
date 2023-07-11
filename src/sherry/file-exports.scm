@@ -15,7 +15,12 @@
 (define-module (sherry file-exports)
   :export (file-exports)
   :use-module ((euphrates properties) :select (define-property define-provider))
+  :use-module ((sherry file-first-expression) :select (file-first-expression))
   :use-module ((sherry file-source-type) :select (file-source-type))
+  :use-module ((sherry guile-decl-get-exports) :select (guile-decl-get-exports))
+  :use-module ((sherry is-guile-decl-huh) :select (is-guile-decl?))
+  :use-module ((sherry is-r7rsdecl-decl-huh) :select (is-r7rsdecl-decl?))
+  :use-module ((sherry r7rsdecl-get-exports) :select (r7rsdecl-get-exports))
   )
 
 (define-property file-exports)
@@ -25,4 +30,12 @@
   :sources ()
   (lambda (this)
     (define type (file-source-type this))
-    TODO))
+    (define decl/sexp (file-first-expression this))
+    (cond
+     ((is-guile-decl? decl/sexp)
+      (guile-decl-get-exports decl/sexp))
+     ((is-r7rsdecl-decl? decl/sexp)
+      (r7rsdecl-get-exports decl/sexp))
+     (else
+      (list) ;; NOTE: maybe throw an error instead?
+      ))))

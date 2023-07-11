@@ -12,12 +12,13 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (sherry is-guile-file-huh)
-  :export (is-guile-file?)
-  :use-module ((sherry file-first-expression) :select (file-first-expression))
-  :use-module ((sherry is-guile-decl-huh) :select (is-guile-decl?))
+(define-module (sherry guile-decl-get-exports)
+  :export (guile-decl-get-exports)
+  :use-module ((sherry get-guile-module) :select (get-guile-module))
   )
 
-(define (is-guile-file? <filepath>)
-  (define first (file-first-expression <filepath>))
-  (is-guile-decl? first))
+(define (guile-decl-get-exports decl/sexp)
+  (define module (get-guile-module decl/sexp))
+  (if module
+      (guile-module-definition-exports module)
+      '()))
