@@ -3,6 +3,8 @@ PREFIX="/usr/local"
 PREFIXBIN="$(PREFIX)/bin"
 PREFIXSHARE="$(PREFIX)/share"
 
+SUBMODULES = deps/euphrates/README.md
+
 all: build
 
 # install:
@@ -14,14 +16,17 @@ all: build
 # 		--prefix-share $(PREFIXSHARE) \
 # 		--prefix-bin $(PREFIXBIN) \
 
-build:
+build: $(SUBMODULES)
 	guile --r7rs -L src -s src/sherry/main.scm --version
 
-install:
+install: build
 	guile --r7rs -L src -s src/sherry/main.scm \
 		install-program \
 		--prefix-share $(PREFIXSHARE) \
 		--prefix-bin $(PREFIXBIN) \
 
-test:
+test: $(SUBMODULES)
 	sh scripts/run-tests.sh
+
+$(SUBMODULES):
+	git submodule update --init
