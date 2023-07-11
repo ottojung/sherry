@@ -24,7 +24,7 @@
 
 (define-provider p
   :targets (file-lines)
-  :sources ()
+  :sources (file-text)
   (lambda (this)
     (define text (file-text this))
     (string->lines text)))

@@ -14,12 +14,12 @@
 
 
 (define-module (sherry licensedfile)
-  :export (parse-licensedfile parse-licensedfile-lines make-licensedfile licensedfile-prelicense-content licensedfile-license licensedfile-postlicense-content display-licensedfile)
-  :use-module ((euphrates define-type9) :select (define-type9))
+  :export (parse-licensedfile file-prelicense-content file-license file-postlicense-content display-licensedfile)
   :use-module ((euphrates fn-pair) :select (fn-pair))
   :use-module ((euphrates irregex) :select (irregex-match sre->irregex))
   :use-module ((euphrates lines-to-string) :select (lines->string))
   :use-module ((euphrates list-span-while) :select (list-span-while))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((euphrates range) :select (range))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
   :use-module ((sherry file-lines) :select (file-lines))
@@ -27,14 +27,9 @@
   :use-module ((sherry shebang-line-huh) :select (shebang-line?))
   )
 
-
-(define-type9 <licensedfile>
-  (make-licensedfile prelicense-content license postlicense-content) licensedfile?
-  (prelicense-content licensedfile-prelicense-content)
-  (license licensedfile-license)
-  (postlicense-content licensedfile-postlicense-content)
-  )
-
+(define-property file-prelicense-content)
+(define-property file-license)
+(define-property file-postlicense-content)
 
 (define license-line?
   (lambda (line)
@@ -52,57 +47,58 @@
     (lambda (line)
       (irregex-match r line))))
 
-(define (parse-licensedfile filepath)
-  (parse-licensedfile-lines (file-lines filepath)))
+(define-provider licensedp
+  :targets (file-license file-prelicense-content file-postlicense-content)
+  :sources (file-lines)
 
-(define (parse-licensedfile-lines lines)
-  (define-values
-      (prelicense-content/0 after-prelicense-content/0)
-    (list-span-while
-     (fn-pair
-      (i line)
-      (and (equal? i 0)
-           (shebang-line? line)))
-     (map cons
-          (range (length lines))
-          lines)))
+  (lambda (filepath)
+    (define lines (file-lines filepath))
 
-  (define prelicense-content/1 (map cdr prelicense-content/0))
-  (define after-prelicense-content/1 (map cdr after-prelicense-content/0))
+    (define-values
+        (prelicense-content/0 after-prelicense-content/0)
+      (list-span-while
+       (fn-pair
+        (i line)
+        (and (equal? i 0)
+             (shebang-line? line)))
+       (map cons
+            (range (length lines))
+            lines)))
 
-  (define-values
-      (prelicense-whitespace after-prelicense)
-    (list-span-while string-null-or-whitespace? after-prelicense-content/1))
+    (define prelicense-content/1 (map cdr prelicense-content/0))
+    (define after-prelicense-content/1 (map cdr after-prelicense-content/0))
 
-  (define-values
-      (license-header-line after-license-header)
-    (if (null? after-prelicense)
-        (values #f '())
-        (let ((first (car after-prelicense)))
-          (if (license-header-line? first)
-              (values first (cdr after-prelicense))
-              (values #f after-prelicense)))))
+    (define-values
+        (prelicense-whitespace after-prelicense)
+      (list-span-while string-null-or-whitespace? after-prelicense-content/1))
 
-  (define-values
-      (license-text after-license/0)
-    (list-span-while license-line? after-license-header))
+    (define-values
+        (license-header-line after-license-header)
+      (if (null? after-prelicense)
+          (values #f '())
+          (let ((first (car after-prelicense)))
+            (if (license-header-line? first)
+                (values first (cdr after-prelicense))
+                (values #f after-prelicense)))))
 
-  (define license
-    (and license-header-line
-         (parse-license-from-lines
-          (cons license-header-line license-text))))
+    (define-values
+        (license-text after-license/0)
+      (list-span-while license-line? after-license-header))
 
-  (if license
-      (make-licensedfile
-       (append prelicense-content/1
-               prelicense-whitespace)
-       license
-       after-license/0)
-      (make-licensedfile
-       prelicense-content/1
-       license
-       (append prelicense-whitespace
-               after-license/0))))
+    (define license
+      (and license-header-line
+           (parse-license-from-lines
+            (cons license-header-line license-text))))
+
+    (values
+     license
+     (if license
+         (append prelicense-content/1 prelicense-whitespace)
+         prelicense-content/1)
+     (if license
+         after-license/0
+         (append prelicense-whitespace
+                 after-license/0)))))
 
 (define display-licensedfile
   (case-lambda
@@ -112,8 +108,8 @@
       (for-each
        (lambda (line)
          (display line) (newline))
-       (licensedfile-prelicense-content this))
-      (display-license (licensedfile-license this))
+       (file-prelicense-content this))
+      (display-license (file-license this))
       (display
        (lines->string
-        (licensedfile-postlicense-content this)))))))
+        (file-postlicense-content this)))))))

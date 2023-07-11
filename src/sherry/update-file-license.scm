@@ -14,13 +14,13 @@
 
 (define-module (sherry update-file-license)
   :export (update-file-license update-file-license/overwrite)
+  :use-module ((euphrates properties) :select (set-property!))
   :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
   :use-module ((sherry file-modification-years) :select (file-modification-years))
-  :use-module ((sherry file-structure) :select (file-structure))
   :use-module ((sherry get-current-year) :select (get-current-year))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
   :use-module ((sherry license) :select (license-author license-text license-years make-license))
-  :use-module ((sherry licensedfile) :select (display-licensedfile licensedfile-postlicense-content licensedfile-prelicense-content make-licensedfile))
+  :use-module ((sherry licensedfile) :select (display-licensedfile file-license))
   :use-module ((sherry log) :select (log-info))
   :use-module ((sherry year-in-years-huh) :select (year-in-years?))
   )
@@ -39,9 +39,6 @@
 
 
 (define (update-file-license --all-years filepath)
-  (define licensedfile
-    (file-structure filepath))
-
   (define license-exists?
     (file-license-exists? filepath))
 
@@ -90,12 +87,7 @@
          (license-author current-license)
          (license-text current-license))))
 
-  (define new-licensedfile
-    (if (and up-to-date? license-exists?)
-        licensedfile
-        (make-licensedfile
-         (licensedfile-prelicense-content licensedfile)
-         new-license
-         (licensedfile-postlicense-content licensedfile))))
+  (unless (and up-to-date? license-exists?)
+    (set-property! (file-license filepath) new-license))
 
-  (values up-to-date? license-exists? new-licensedfile))
+  (when #t #f))

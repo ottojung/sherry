@@ -14,16 +14,15 @@
 
 (define-module (sherry infer-file-license)
   :export (infer-file-license infer-file-license/print)
-  :use-module ((euphrates compose-under-seq) :select (compose-under-seq))
   :use-module ((euphrates directory-files) :select (directory-files))
+  :use-module ((euphrates list-and-map) :select (list-and-map))
   :use-module ((euphrates list-map-first) :select (list-map-first))
-  :use-module ((euphrates negate) :select (negate))
   :use-module ((euphrates path-get-dirname) :select (path-get-dirname))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
   :use-module ((sherry file-lines) :select (file-lines))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry license) :select (display-license license-author license-text make-license))
-  :use-module ((sherry licensedfile) :select (licensedfile-license parse-licensedfile parse-licensedfile-lines))
+  :use-module ((sherry licensedfile) :select (file-license))
   :use-module ((sherry log) :select (log-error log-info))
   )
 
@@ -34,9 +33,8 @@
   (define neighbours
     (map car (directory-files (path-get-dirname filepath))))
   (define found
-    (list-map-first
-     (compose-under-seq and parse-licensedfile licensedfile-license)
-     #f neighbours))
+    (list-map-first file-license #f neighbours))
+
   (and found
        (make-license
         (get-file-modification-years filepath)
@@ -46,21 +44,20 @@
 
 (define (infer-file-license filepath)
   (define lines (file-lines filepath))
-  (define non-empty (filter (negate string-null-or-whitespace?) lines))
-  (if (null? non-empty)
+
+  (if (list-and-map string-null-or-whitespace? lines)
       (let ()
         (log-info "The file ~s appears empty." filepath)
         (infer-from-neighbours filepath))
-      (let ()
-        (define parsed (parse-licensedfile-lines lines))
-        (or (licensedfile-license parsed)
-            (let ()
-              (log-info "The file ~s appears to not have an existing license." filepath)
-              (infer-from-neighbours filepath))))))
+      (or (file-license filepath)
+          (let ()
+            (log-info "The file ~s appears to not have an existing license." filepath)
+            (infer-from-neighbours filepath)))))
 
 
 (define (infer-file-license/print filepath)
   (define inferred (infer-file-license filepath))
+
   (if inferred
       (display-license inferred)
       (log-error "Could not infer the license.")))

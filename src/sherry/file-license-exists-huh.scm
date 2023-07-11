@@ -14,9 +14,8 @@
 
 (define-module (sherry file-license-exists-huh)
   :export (file-license-exists?)
-  :use-module ((sherry file-structure) :select (file-structure))
-  :use-module ((sherry licensedfile) :select (licensedfile-license))
+  :use-module ((sherry licensedfile) :select (file-license))
   )
 
 (define (file-license-exists? this)
-  (not (not (licensedfile-license (file-structure this)))))
+  (not (not (file-license this))))
