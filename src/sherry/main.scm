@@ -19,6 +19,7 @@
   :use-module ((euphrates properties) :select (with-properties))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((sherry get-file-dependencies) :select (get-file-dependencies/print))
+  :use-module ((sherry get-file-exports) :select (get-file-exports/print))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
   :use-module ((sherry get-file-source-type) :select (get-file-source-type/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
