@@ -18,7 +18,7 @@
   :use-module ((euphrates identity) :select (identity))
   :use-module ((euphrates irregex) :select (irregex-match-substring irregex-replace irregex-search sre->irregex))
   :use-module ((euphrates lines-to-string) :select (lines->string))
-  :use-module ((euphrates list-maximal-element-or) :select (list-maximal-element-or))
+  :use-module ((euphrates list-maximal-element-or-proj) :select (list-maximal-element-or/proj))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((euphrates string-split-3) :select (string-split-3))
   :use-module ((euphrates string-strip) :select (string-strip))
@@ -103,8 +103,8 @@
       (define prefixes
         (map irregex-match-substring matches))
 
-      (list-maximal-element-or
-       #f string-length prefixes))))
+      (list-maximal-element-or/proj
+       #f string-length > prefixes))))
 
 
 (define (year->string year)
