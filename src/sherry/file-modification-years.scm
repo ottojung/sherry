@@ -15,13 +15,14 @@
 
 (define-module (sherry file-modification-years)
   :export (file-modification-years)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   )
 
-(define-property
-  file-modification-years
-  :initialize
-  (lambda (this skip!)
-    (get-file-modification-years this))
-  set-file-modification-years!)
+(define-property file-modification-years)
+
+(define-provider p
+  :targets (file-modification-years)
+  :sources ()
+  (lambda (this)
+    (get-file-modification-years this)))

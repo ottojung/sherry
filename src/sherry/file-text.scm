@@ -15,13 +15,14 @@
 
 (define-module (sherry file-text)
   :export (file-text)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((euphrates read-string-file) :select (read-string-file))
   )
 
-(define-property
-  file-text
-  :initialize
-  (lambda (this skip!)
-    (read-string-file this))
-  set-file-text!)
+(define-property file-text)
+
+(define-provider p
+  :targets (file-text)
+  :sources ()
+  (lambda (this)
+    (read-string-file this)))

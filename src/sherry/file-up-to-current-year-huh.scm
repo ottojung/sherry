@@ -14,17 +14,18 @@
 
 (define-module (sherry file-license-up-to-current-year-huh)
   :export (file-license-up-to-current-year?)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry file-modification-years) :select (file-modification-years))
   :use-module ((sherry get-current-year) :select (get-current-year))
   :use-module ((sherry year-in-years-huh) :select (year-in-years?))
   )
 
-(define-property
-  file-license-up-to-current-year?
-  :initialize
-  (lambda (this skip!)
+(define-property file-license-up-to-current-year?)
+
+(define-provider p
+  :targets (file-license-up-to-current-year?)
+  :sources ()
+  (lambda (this)
     (define years (file-modification-years this))
     (define current-year (get-current-year))
-    (year-in-years? current-year years))
-  set-file-license-up-to-current-year?!)
+    (year-in-years? current-year years)))

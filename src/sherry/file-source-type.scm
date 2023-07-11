@@ -14,21 +14,22 @@
 
 (define-module (sherry file-source-type)
   :export (file-source-type)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry is-guile-file-huh) :select (is-guile-file?))
   :use-module ((sherry is-r7rs-library-file-huh) :select (is-r7rs-library-file?))
   :use-module ((sherry is-r7rs-program-file-huh) :select (is-r7rs-program-file?))
   :use-module ((sherry is-r7rs-source-file-huh) :select (is-r7rs-source-file?))
   )
 
-(define-property
-  file-source-type
-  :initialize
-  (lambda (this skip!)
+(define-property file-source-type)
+
+(define-provider p
+  :targets (file-source-type)
+  :sources ()
+  (lambda (this)
     (cond
      ((is-guile-file? this) 'guile)
      ((is-r7rs-library-file? this) 'r7rs/library)
      ((is-r7rs-source-file? this) 'r7rs/source)
      ((is-r7rs-program-file? this) 'r7rs/program)
-     (else 'unknown)))
-  set-file-source-type!)
+     (else 'unknown))))

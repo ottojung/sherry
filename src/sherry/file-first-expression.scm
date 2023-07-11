@@ -14,13 +14,14 @@
 
 (define-module (sherry file-first-expression)
   :export (file-first-expression)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry file-read-first-expression) :select (file-read-first-expression))
   )
 
-(define-property
-  file-first-expression
-  :initialize
-  (lambda (this skip!)
-    (file-read-first-expression this))
-  set-file-first-expression!)
+(define-property file-first-expression)
+
+(define-provider p
+  :targets (file-first-expression)
+  :sources ()
+  (lambda (this)
+    (file-read-first-expression this)))

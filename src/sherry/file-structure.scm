@@ -15,13 +15,14 @@
 
 (define-module (sherry file-structure)
   :export (file-structure)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry licensedfile) :select (parse-licensedfile))
   )
 
-(define-property
-  file-structure
-  :initialize
-  (lambda (this skip!)
-    (parse-licensedfile this))
-  set-file-license!)
+(define-property file-structure)
+
+(define-provider p
+  :targets (file-structure)
+  :sources ()
+  (lambda (this)
+    (parse-licensedfile this)))

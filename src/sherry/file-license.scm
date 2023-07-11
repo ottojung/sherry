@@ -15,15 +15,16 @@
 
 (define-module (sherry file-license)
   :export (file-license)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry file-structure) :select (file-structure))
   :use-module ((sherry licensedfile) :select (licensedfile-license))
   )
 
-(define-property
-  file-license
-  :initialize
-  (lambda (this skip!)
+(define-property file-license)
+
+(define-provider p
+  :targets (file-license)
+  :sources ()
+  (lambda (this)
     (define licensedfile (file-structure this))
-    (licensedfile-license licensedfile))
-  set-file-license!)
+    (licensedfile-license licensedfile)))

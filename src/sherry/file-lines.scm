@@ -15,15 +15,16 @@
 
 (define-module (sherry file-lines)
   :export (file-lines)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((euphrates string-to-lines) :select (string->lines))
   :use-module ((sherry file-text) :select (file-text))
   )
 
-(define-property
-  file-lines
-  :initialize
-  (lambda (this skip!)
+(define-property file-lines)
+
+(define-provider p
+  :targets (file-lines)
+  :sources ()
+  (lambda (this)
     (define text (file-text this))
-    (string->lines text))
-  set-file-lines!)
+    (string->lines text)))

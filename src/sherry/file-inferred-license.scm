@@ -14,13 +14,14 @@
 
 (define-module (sherry file-inferred-license)
   :export (file-inferred-license)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
   )
 
-(define-property
-  file-inferred-license
-  :initialize
-  (lambda (this skip!)
-    (infer-file-license this))
-  set-file-inferred-license!)
+(define-property file-inferred-license)
+
+(define-provider p
+  :targets (file-inferred-license)
+  :sources ()
+  (lambda (this)
+    (infer-file-license this)))

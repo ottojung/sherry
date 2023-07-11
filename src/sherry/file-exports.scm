@@ -14,14 +14,15 @@
 
 (define-module (sherry file-exports)
   :export (file-exports)
-  :use-module ((euphrates properties) :select (define-property))
+  :use-module ((euphrates properties) :select (define-property define-provider))
   :use-module ((sherry file-source-type) :select (file-source-type))
   )
 
-(define-property
-  file-exports
-  :initialize
-  (lambda (this skip!)
+(define-property file-exports)
+
+(define-provider p
+  :targets (file-exports)
+  :sources ()
+  (lambda (this)
     (define type (file-source-type this))
-    TODO)
-  set-file-exports!)
+    TODO))
