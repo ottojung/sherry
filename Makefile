@@ -17,7 +17,7 @@ all: build
 # 		--prefix-bin $(PREFIXBIN) \
 
 build: $(SUBMODULES)
-	guile --r7rs -L src -s src/sherry/main.scm --version
+	sh tests/test-version.sh
 
 install: build
 	guile --r7rs -L src -s src/sherry/main.scm \
