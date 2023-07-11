@@ -3,7 +3,7 @@ PREFIX="/usr/local"
 PREFIXBIN="$(PREFIX)/bin"
 PREFIXSHARE="$(PREFIX)/share"
 
-all:
+all: build
 
 # install:
 # 	guile --r7rs -L src -s src/sherry/main.scm install-program \
@@ -13,6 +13,9 @@ all:
 # 		--src src \
 # 		--prefix-share $(PREFIXSHARE) \
 # 		--prefix-bin $(PREFIXBIN) \
+
+build:
+	guile --r7rs -L src -s src/sherry/main.scm --version
 
 install:
 	guile --r7rs -L src -s src/sherry/main.scm \
