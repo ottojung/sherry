@@ -64,8 +64,8 @@
     :use-module ((euphrates write-string-file) :select (write-string-file))
     :use-module ((sherry file-read-first-expression) :select (file-read-first-expression))
     :use-module ((sherry get-guile-module) :select (get-guile-module))
-    :use-module ((sherry is-guile-definition-huh) :select (is-guile-module-definition?))
     :use-module ((sherry is-guile-file-huh) :select (is-guile-file?))
+    :use-module ((sherry is-guile-module-definition-huh) :select (is-guile-module-definition?))
     )))
 
 (use-modules (ice-9 rdelim))

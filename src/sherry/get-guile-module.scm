@@ -17,7 +17,7 @@
   :use-module ((euphrates assq-or) :select (assq-or))
   :use-module ((euphrates list-and-map) :select (list-and-map))
   :use-module ((euphrates list-find-first) :select (list-find-first))
-  :use-module ((sherry is-guile-definition-huh) :select (is-guile-module-definition?))
+  :use-module ((sherry is-guile-module-definition-huh) :select (is-guile-module-definition?))
   )
 
 (define (get-guile-module decl/sexp)
