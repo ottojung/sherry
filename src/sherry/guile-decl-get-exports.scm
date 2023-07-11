@@ -15,6 +15,7 @@
 (define-module (sherry guile-decl-get-exports)
   :export (guile-decl-get-exports)
   :use-module ((sherry get-guile-module) :select (get-guile-module))
+  :use-module ((sherry guile-module-definition-exports) :select (guile-module-definition-exports))
   )
 
 (define (guile-decl-get-exports decl/sexp)
