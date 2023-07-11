@@ -19,3 +19,6 @@ install:
 		install-program \
 		--prefix-share $(PREFIXSHARE) \
 		--prefix-bin $(PREFIXBIN) \
+
+test:
+	sh scripts/run-tests.sh
