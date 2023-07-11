@@ -19,6 +19,7 @@
   :use-module ((euphrates irregex) :select (irregex-match-substring irregex-replace irregex-search sre->irregex))
   :use-module ((euphrates lines-to-string) :select (lines->string))
   :use-module ((euphrates list-maximal-element-or-proj) :select (list-maximal-element-or/proj))
+  :use-module ((euphrates properties) :select (define-property set-property!))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((euphrates string-split-3) :select (string-split-3))
   :use-module ((euphrates string-strip) :select (string-strip))
@@ -30,14 +31,18 @@
   :use-module ((sherry yearsrange) :select (make-yearsrange yearsrange-end yearsrange-start yearsrange?))
   )
 
+(define-property license-years)
+(define-property license-author)
+(define-property license-text)
 
-(define-type9 <license>
-  (make-license years author text) license?
-  (years license-years)
-  (author license-author)
-  (text license-text)
-  )
+(define-type9 <license> (license-constructor) license?)
 
+(define (make-license years author text)
+  (define license (license-constructor))
+  (set-property! (license-years license) years)
+  (set-property! (license-author license) author)
+  (set-property! (license-text license) text)
+  license)
 
 (define parse-header-line
   (let ((r (sre->irregex
