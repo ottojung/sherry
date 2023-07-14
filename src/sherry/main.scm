@@ -35,7 +35,7 @@
     MAIN : --help
     /      infer-license DASH? <filepath>
     /      update-license UPDATEOPT* DASH? <filepath>
-    /      minify-license DASH? <filepath>
+    /      minify-license MINIFYOPT* DASH? <filepath>
     /      get-modification-years DASH? <filepath>
     /      get-dependencies DASH? <filepath>
     /      get-exports DASH? <filepath>
@@ -43,6 +43,7 @@
     /      install-program INSTALLOPT*
     /      --version
     DASH : --
+    MINIFYOPT : --print
     UPDATEOPT : --if-exists
     /           --all-years
     /           --just-current-year
@@ -78,7 +79,7 @@
      (update-license
       (update-file-license/overwrite --if-exists --all-years <filepath>))
      (minify-license
-      (minify-license/overwrite <filepath>))
+      (minify-license/overwrite --print <filepath>))
      (get-modification-years
       (get-file-modification-years/print <filepath>))
      (get-dependencies

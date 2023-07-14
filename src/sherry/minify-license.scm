@@ -22,18 +22,20 @@
   :use-module ((euphrates words-to-string) :select (words->string))
   :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
-  :use-module ((sherry license) :select (license-prefix license-text))
-  :use-module ((sherry licensedfile) :select (display-licensedfile))
+  :use-module ((sherry license) :select (display-license license-prefix license-text))
+  :use-module ((sherry licensedfile) :select (display-licensedfile file-license))
   :use-module ((sherry log) :select (log-info))
   )
 
 
-(define (minify-license/overwrite filepath)
+(define (minify-license/overwrite --print filepath)
   (if (minify-license! filepath)
-      (call-with-output-file
-          filepath
-        (lambda (p)
-          (display-licensedfile filepath p)))
+      (if --print
+          (display-license (file-license filepath))
+          (call-with-output-file
+              filepath
+            (lambda (p)
+              (display-licensedfile filepath p))))
       (begin
         (log-info "File already has the minified license"))))
 
