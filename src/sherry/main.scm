@@ -24,6 +24,7 @@
   :use-module ((sherry get-file-source-type) :select (get-file-source-type/print))
   :use-module ((sherry infer-file-license) :select (infer-file-license/print))
   :use-module ((sherry install-guile-program) :select (install-guile-program))
+  :use-module ((sherry minify-license) :select (minify-license/overwrite))
   :use-module ((sherry update-file-license) :select (update-file-license/overwrite))
   )
 
@@ -34,6 +35,7 @@
     MAIN : --help
     /      infer-license DASH? <filepath>
     /      update-license UPDATEOPT* DASH? <filepath>
+    /      minify-license DASH? <filepath>
     /      get-modification-years DASH? <filepath>
     /      get-dependencies DASH? <filepath>
     /      get-exports DASH? <filepath>
@@ -75,6 +77,8 @@
       (infer-file-license/print <filepath>))
      (update-license
       (update-file-license/overwrite --if-exists --all-years <filepath>))
+     (minify-license
+      (minify-license/overwrite <filepath>))
      (get-modification-years
       (get-file-modification-years/print <filepath>))
      (get-dependencies

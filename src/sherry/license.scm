@@ -13,13 +13,13 @@
 ;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (sherry license)
-  :export (make-license license-author license-years license-text parse-license-from-lines display-license)
+  :export (make-license license-author license-years license-text license-prefix parse-license-from-lines display-license)
   :use-module ((euphrates define-type9) :select (define-type9))
   :use-module ((euphrates identity) :select (identity))
   :use-module ((euphrates irregex) :select (irregex-match-substring irregex-replace irregex-search sre->irregex))
   :use-module ((euphrates lines-to-string) :select (lines->string))
   :use-module ((euphrates list-maximal-element-or-proj) :select (list-maximal-element-or/proj))
-  :use-module ((euphrates properties) :select (define-property set-property!))
+  :use-module ((euphrates properties) :select (define-property define-provider set-property!))
   :use-module ((euphrates raisu) :select (raisu))
   :use-module ((euphrates string-split-3) :select (string-split-3))
   :use-module ((euphrates string-strip) :select (string-strip))
@@ -34,6 +34,7 @@
 (define-property license-years)
 (define-property license-author)
 (define-property license-text)
+(define-property license-prefix) ;; the comment string
 
 (define-type9 <license> (license-constructor) license?)
 
@@ -89,11 +90,13 @@
         (make-license years author text))))
 
 
-(define license-get-prefix
+(define-provider prefix-getter
+  :targets (license-prefix)
+  :sources (license-text)
   (let ((pre (sre->irregex '(seq bos (+ ";") (* (or " " "\t"))))))
-    (lambda (license)
+    (lambda (this)
       (define lines
-        (string->lines (license-text license)))
+        (string->lines (license-text this)))
       (define matches
         (filter
          identity
@@ -103,7 +106,7 @@
           lines)))
 
       (when (null? matches)
-        (raisu 'unexpected-license-text license))
+        (raisu 'unexpected-license-text this))
 
       (define prefixes
         (map irregex-match-substring matches))
@@ -127,7 +130,7 @@
    ((license) (display-license license (current-output-port)))
    ((license port)
     (parameterize ((current-output-port port))
-      (define pre (license-get-prefix license))
+      (define pre (license-prefix license))
       (define years
         (string-join
          (map year->string (license-years license))
