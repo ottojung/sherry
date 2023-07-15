@@ -6,12 +6,11 @@
   :use-module ((euphrates properties) :select (set-property!))
   :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
   :use-module ((sherry file-modification-years) :select (file-modification-years))
-  :use-module ((sherry get-current-year) :select (get-current-year))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
+  :use-module ((sherry license-up-to-date-huh) :select (license-not-included-years/all-years license-not-included-years/current-year license-up-to-date?/all-years license-up-to-date?/current-year))
   :use-module ((sherry license) :select (license-author license-text license-years make-license))
   :use-module ((sherry licensedfile) :select (display-licensedfile file-license))
   :use-module ((sherry log) :select (log-info))
-  :use-module ((sherry year-in-years-huh) :select (year-in-years?))
   )
 
 
@@ -28,56 +27,44 @@
 
 
 (define (update-file-license --all-years filepath)
-  (define license-exists?
-    (file-license-exists? filepath))
+  (define license-exists? (file-license-exists? filepath))
 
   (unless license-exists?
     (log-info "Target file ~s does not have a license header" filepath))
 
-  (define current-license
-    (infer-file-license filepath))
+  (define license (infer-file-license filepath))
 
-  (define years
-    (license-years current-license))
-
-  (define modification-years/0
-    (file-modification-years filepath))
-
-  (define current-year
-    (get-current-year))
-
-  (define modification-years
-    (if --all-years
-        modification-years/0
-        (filter (lambda (year) (equal? year current-year)) modification-years/0)))
-
-  (define not-included-years
-    (filter (lambda (y) (not (year-in-years? y years)))
-            modification-years))
+  (define years (license-years license))
 
   (define up-to-date?
-    (and license-exists?
-         (null? not-included-years)))
+    (if --all-years
+        (license-up-to-date?/all-years license)
+        (license-up-to-date?/current-year license)))
+
+  (define not-included-years
+    (if --all-years
+        (license-not-included-years/all-years license)
+        (license-not-included-years/current-year license)))
 
   (cond
-   ((and up-to-date? license-exists?)
+   (up-to-date?
     (log-info "Target file ~s has an up-to-date license" filepath))
    (license-exists?
-    (log-info "Target file ~a has an outdated license" filepath)))
+    (log-info "Target file ~s has an outdated license" filepath)))
 
   (define new-license
-    (if (and up-to-date? license-exists?)
-        current-license
+    (if up-to-date?
+        license
         (make-license
          filepath
          (cond
-          ((and up-to-date? license-exists?) years)
+          (up-to-date? years)
           (license-exists? (append years not-included-years))
-          (else modification-years))
-         (license-author current-license)
-         (license-text current-license))))
+          (else (file-modification-years filepath)))
+         (license-author license)
+         (license-text license))))
 
-  (unless (and up-to-date? license-exists?)
+  (unless up-to-date?
     (set-property! (file-license filepath) new-license))
 
   (when #t #f))
