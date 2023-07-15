@@ -67,4 +67,4 @@
   (unless up-to-date?
     (set-property! (file-license filepath) new-license))
 
-  (values up-to-date? license-exists? new-license))
+  (values up-to-date? license-exists?))
