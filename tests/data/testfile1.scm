@@ -1,9 +1,4 @@
-#! /bin/sh
-
-RESULT=$(guile --r7rs -L src -s src/sherry/main.scm infer-license -- tests/data/testfile1.scm)
-
-case "$RESULT" in
-    ";;;; Copyright (C) 2023  Otto Jung
+;;;; Copyright (C) 2023  Otto Jung
 ;;;;
 ;;;; This program is free software: you can redistribute it and/or modify
 ;;;; it under the terms of the GNU General Public License as published by
@@ -15,11 +10,16 @@ case "$RESULT" in
 ;;;; GNU General Public License for more details.
 ;;;;
 ;;;; You should have received a copy of the GNU General Public License
-;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.")
-        true ;;
-    *)
-        printf "GOT:\n%s\n" "$RESULT" 1>&2
-        echo "But expected a different license" 1>&2
-        exit 1
-        ;;
-esac
+;;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(define-module (sherry yearsrange)
+  :export (make-yearsrange yearsrange? yearsrange-start yearsrange-end)
+  :use-module ((euphrates define-type9) :select (define-type9))
+  )
+
+
+(define-type9 <yearsrange>
+  (make-yearsrange start end) yearsrange?
+  (start yearsrange-start)
+  (end yearsrange-end)
+  )

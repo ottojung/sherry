@@ -1,6 +1,6 @@
 #! /bin/sh
 
-RESULT=$(guile --r7rs -L src -s src/sherry/main.scm minify-license --print -- src/sherry/yearsrange.scm)
+RESULT=$(guile --r7rs -L src -s src/sherry/main.scm minify-license --print -- tests/data/testfile1.scm)
 
 case "$RESULT" in
     ";;;; Copyright (C) 2023  Otto Jung
