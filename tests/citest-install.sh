@@ -2,5 +2,5 @@
 
 set -e
 
-make --silent install
+sudo make --silent install
 sherry --version 1>/dev/null
