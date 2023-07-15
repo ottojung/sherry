@@ -26,6 +26,7 @@
 
   (and found
        (make-license
+        filepath
         (get-file-modification-years filepath)
         (license-author found)
         (license-text found))))

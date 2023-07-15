@@ -77,7 +77,7 @@
     (define license
       (and license-header-line
            (parse-license-from-lines
-            (cons license-header-line license-text))))
+            filepath (cons license-header-line license-text))))
 
     (values
      license

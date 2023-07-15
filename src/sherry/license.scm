@@ -2,7 +2,7 @@
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (sherry license)
-  :export (make-license license-author license-years license-text license-prefix parse-license-from-lines display-license)
+  :export (make-license license-author license-years license-text license-prefix display-license parse-license-from-lines)
   :use-module ((euphrates define-type9) :select (define-type9))
   :use-module ((euphrates identity) :select (identity))
   :use-module ((euphrates irregex) :select (irregex-match-substring irregex-replace irregex-search sre->irregex))
@@ -24,14 +24,16 @@
 (define-property license-author)
 (define-property license-text)
 (define-property license-prefix) ;; the comment string
+(define-property license-filepath) ;; the original file. May not be present? I am not sure.
 
 (define-type9 <license> (license-constructor) license?)
 
-(define (make-license years author text)
+(define (make-license filepath years author text)
   (define license (license-constructor))
   (set-property! (license-years license) years)
   (set-property! (license-author license) author)
   (set-property! (license-text license) text)
+  (set-property! (license-filepath license) filepath)
   license)
 
 (define parse-header-line
@@ -70,13 +72,13 @@
                (else (values years (words->string rest))))))))))
 
 
-(define (parse-license-from-lines lines)
-  (if (null? lines) #f
+(define (parse-license-from-lines filepath license-lines)
+  (if (null? license-lines) #f
       (let ()
-        (define header-line (car lines))
-        (define text (lines->string (cdr lines)))
+        (define header-line (car license-lines))
+        (define text (lines->string (cdr license-lines)))
         (define-values (years author) (parse-header-line header-line))
-        (make-license years author text))))
+        (make-license filepath years author text))))
 
 
 (define-provider prefix-getter

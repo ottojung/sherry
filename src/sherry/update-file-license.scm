@@ -69,6 +69,7 @@
     (if (and up-to-date? license-exists?)
         current-license
         (make-license
+         filepath
          (cond
           ((and up-to-date? license-exists?) years)
           (license-exists? (append years not-included-years))
