@@ -82,7 +82,9 @@
 
   (make-directories install-prefix-share)
   (make-directories install-prefix-bin)
-  (run-syncproc "cp" "-f" "-p" "-L" "-T" "-r" "--" dirpath-of-src share-target)
+
+  (unless (= 0 (run-syncproc "cp" "-f" "-p" "-L" "-T" "-r" "--" dirpath-of-src share-target))
+    (raisu 'copy-failed "Failing the process because copying the files failed"))
 
   (for-each
    (fn-pair
