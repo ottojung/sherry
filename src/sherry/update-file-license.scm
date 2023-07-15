@@ -15,7 +15,7 @@
 
 
 (define (update-file-license/overwrite --if-exists --all-years filepath)
-  (define-values (up-to-date? license-exists? new-licensedfile)
+  (define-values (up-to-date? license-exists?)
     (update-file-license --all-years filepath))
   (unless (and up-to-date? license-exists?)
     (when (or (and --if-exists license-exists?)
@@ -23,7 +23,7 @@
       (call-with-output-file
           filepath
         (lambda (p)
-          (display-licensedfile new-licensedfile p))))))
+          (display-licensedfile filepath p))))))
 
 
 (define (update-file-license --all-years filepath)
@@ -67,4 +67,4 @@
   (unless up-to-date?
     (set-property! (file-license filepath) new-license))
 
-  (when #t #f))
+  (values up-to-date? license-exists? new-license))
