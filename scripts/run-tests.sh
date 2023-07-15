@@ -2,11 +2,20 @@
 
 set -e
 
-TESTCOUNT=$(ls tests/test-* | wc -l)
+case "$CI" in
+    1)
+        FILES=$(ls tests/test-* tests/citest-*)
+        ;;
+    *)
+        FILES=$(ls tests/test-*)
+        ;;
+esac
+
+TESTCOUNT=$(echo "$FILES" | wc -l)
 INDEX=0
 FAILED=0
 
-for FILE in tests/test-*
+for FILE in $FILES
 do
 	INDEX=$((INDEX + 1))
 	SHORT="$(basename "$FILE")"
