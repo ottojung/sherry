@@ -1,6 +1,6 @@
 #! /bin/sh
 
-set -xe
+set -e
 
-make install
-sherry --version
+make --silent install
+sherry --version 1>/dev/null
