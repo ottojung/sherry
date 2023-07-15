@@ -77,7 +77,7 @@
       (get-file-exports/print <filepath>))
      (get-source-type
       (get-file-source-type/print <filepath>))
-     (install-guile-program
+     (install-program
       (install-guile-program
        (map cons (or <binary-name...> '()) (or <filepath-of-main...> '()))
        <project-name>
