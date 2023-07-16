@@ -40,18 +40,21 @@
              (module-declaration-replace-exports
               (list (string->symbol <export-name>)))))
 
-  (cond
-   ((equal? type 'guile)
-    (call-with-output-file
-        main-filepath
-      (lambda (p)
-        (display current-text p)
-        (newline p)
+  (call-with-output-file
+      main-filepath
+    (lambda (p)
+      (display current-text p)
+      (newline p)
+      (cond
+       ((equal? type 'guile)
         (pretty-print inferred-module p)
-        (newline p)
-        (write `(define (,(string->symbol <export-name>) TODO) TODO) p)
-        (newline p))))
+        (newline p))
+       (else 'pass))
+      (write `(define (,(string->symbol <export-name>) TODO) TODO) p)
+      (newline p)))
 
+  (cond
+   ((equal? type 'guile) 'pass)
    ((equal? type 'r7rs/library)
     (call-with-output-file
         lib-filepath
