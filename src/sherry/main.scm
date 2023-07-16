@@ -1,25 +1,6 @@
 ;;;; Copyright (C) 2023  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (sherry main)
-  :use-module ((euphrates current-program-path-p) :select (current-program-path/p))
-  :use-module ((euphrates define-cli) :select (define-cli:show-help with-cli))
-  :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
-  :use-module ((euphrates properties) :select (with-properties))
-  :use-module ((euphrates raisu) :select (raisu))
-  :use-module ((euphrates stringf) :select (stringf))
-  :use-module ((sherry create-file) :select (create-file-by-name))
-  :use-module ((sherry get-file-dependencies) :select (get-file-dependencies/print))
-  :use-module ((sherry get-file-exports) :select (get-file-exports/print))
-  :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
-  :use-module ((sherry get-file-source-type) :select (get-file-source-type/print))
-  :use-module ((sherry infer-file-license) :select (infer-file-license/print))
-  :use-module ((sherry install-guile-program) :select (install-guile-program))
-  :use-module ((sherry minify-license) :select (minify-license/overwrite))
-  :use-module ((sherry update-file-license) :select (update-file-license/overwrite))
-  )
-
-
 (define (main)
   (with-cli
    (MAIN

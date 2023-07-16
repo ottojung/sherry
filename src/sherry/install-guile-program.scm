@@ -1,21 +1,6 @@
 ;;;; Copyright (C) 2023  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (sherry install-guile-program)
-  :export (install-guile-program)
-  :use-module ((euphrates append-posix-path) :select (append-posix-path))
-  :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
-  :use-module ((euphrates fn-pair) :select (fn-pair))
-  :use-module ((euphrates get-current-directory) :select (get-current-directory))
-  :use-module ((euphrates make-directories) :select (make-directories))
-  :use-module ((euphrates path-get-basename) :select (path-get-basename))
-  :use-module ((euphrates path-normalize) :select (path-normalize))
-  :use-module ((euphrates raisu) :select (raisu))
-  :use-module ((euphrates remove-common-prefix) :select (remove-common-prefix))
-  :use-module ((euphrates run-syncproc) :select (run-syncproc))
-  :use-module ((euphrates system-environment) :select (system-environment-get))
-  )
-
 (define (infer-main-binary-name dirpath-of-src project-name)
   project-name)
 

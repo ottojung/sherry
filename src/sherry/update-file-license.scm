@@ -1,20 +1,6 @@
 ;;;; Copyright (C) 2023  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (sherry update-file-license)
-  :export (update-file-license update-file-license/overwrite)
-  :use-module ((euphrates properties) :select (set-property!))
-  :use-module ((euphrates raisu) :select (raisu))
-  :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
-  :use-module ((sherry file-modification-years) :select (file-modification-years))
-  :use-module ((sherry infer-file-license) :select (infer-file-license))
-  :use-module ((sherry license-up-to-date-huh) :select (license-not-included-years/all-years license-not-included-years/current-year license-up-to-date?/all-years license-up-to-date?/current-year))
-  :use-module ((sherry license) :select (license-author license-text license-years make-license))
-  :use-module ((sherry licensedfile) :select (display-licensedfile file-license))
-  :use-module ((sherry log) :select (log-info))
-  )
-
-
 (define (update-file-license/overwrite --if-exists --all-years filepath)
   (define-values (up-to-date? license-exists?)
     (update-file-license --all-years filepath))

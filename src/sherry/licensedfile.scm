@@ -1,21 +1,6 @@
 ;;;; Copyright (C) 2023  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-(define-module (sherry licensedfile)
-  :export (parse-licensedfile file-prelicense-content file-license file-postlicense-content display-licensedfile)
-  :use-module ((euphrates fn-pair) :select (fn-pair))
-  :use-module ((euphrates irregex) :select (irregex-match sre->irregex))
-  :use-module ((euphrates lines-to-string) :select (lines->string))
-  :use-module ((euphrates list-span-while) :select (list-span-while))
-  :use-module ((euphrates properties) :select (define-property define-provider))
-  :use-module ((euphrates range) :select (range))
-  :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
-  :use-module ((sherry file-lines) :select (file-lines))
-  :use-module ((sherry license) :select (display-license license-text parse-license-from-lines))
-  :use-module ((sherry shebang-line-huh) :select (shebang-line?))
-  )
-
 (define-property file-prelicense-content)
 (define-property file-license)
 (define-property file-postlicense-content)

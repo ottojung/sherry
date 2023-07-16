@@ -1,0 +1,67 @@
+
+(define-library
+  (sherry main)
+  (import
+    (only (euphrates current-program-path-p)
+          current-program-path/p))
+  (import
+    (only (euphrates define-cli)
+          define-cli:show-help
+          with-cli))
+  (import
+    (only (euphrates file-or-directory-exists-q)
+          file-or-directory-exists?))
+  (import
+    (only (euphrates properties) with-properties))
+  (import (only (euphrates raisu) raisu))
+  (import (only (euphrates stringf) stringf))
+  (import
+    (only (sherry create-file) create-file-by-name))
+  (import
+    (only (sherry get-file-dependencies)
+          get-file-dependencies/print))
+  (import
+    (only (sherry get-file-exports)
+          get-file-exports/print))
+  (import
+    (only (sherry get-file-modification-years)
+          get-file-modification-years/print))
+  (import
+    (only (sherry get-file-source-type)
+          get-file-source-type/print))
+  (import
+    (only (sherry infer-file-license)
+          infer-file-license/print))
+  (import
+    (only (sherry install-guile-program)
+          install-guile-program))
+  (import
+    (only (sherry minify-license)
+          minify-license/overwrite))
+  (import
+    (only (sherry update-file-license)
+          update-file-license/overwrite))
+  (import
+    (only (scheme base)
+          /
+          begin
+          cond
+          cons
+          define
+          else
+          map
+          newline
+          or
+          parameterize
+          quote
+          unless
+          when))
+  (import (only (scheme process-context) exit))
+  (import (only (scheme write) display))
+  (cond-expand
+    (guile (import (only (srfi srfi-42) :)))
+    (else (import (only (srfi 42) :))))
+  (cond-expand
+    (guile (import (only (guile) include-from-path))
+           (begin (include-from-path "sherry/main.scm")))
+    (else (include "main.scm"))))
