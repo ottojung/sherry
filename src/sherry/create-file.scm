@@ -17,7 +17,10 @@
   (let ((--if-exists #f)
         (--all-years #f)
         (filepath main-filepath))
-    (update-file-license/overwrite --if-exists --all-years filepath))
+    (catchu-case
+     (update-file-license/overwrite --if-exists --all-years filepath)
+     (('cannot-infer-the-license . args)
+      (log-info "Could not infer file license."))))
 
   (define current-text
     (read-string-file main-filepath))

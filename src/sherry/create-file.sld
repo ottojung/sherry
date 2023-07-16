@@ -4,6 +4,8 @@
   (export
     create-file-by-name
     create-file-by-name/print)
+  (import
+    (only (euphrates catchu-case) catchu-case))
   (import (only (euphrates comp) appcomp))
   (import
     (only (euphrates list-find-first)
@@ -25,6 +27,7 @@
     (only (sherry file-neighbours) file-neighbours))
   (import
     (only (sherry file-source-type) file-source-type))
+  (import (only (sherry log) log-info))
   (import
     (only (sherry module-declaration-replace-exports)
           module-declaration-replace-exports))
