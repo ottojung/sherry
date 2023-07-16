@@ -46,16 +46,15 @@
   (import
     (only (scheme base)
           /
+          and
           begin
           cond
           cons
-          define
           else
           if
           map
           newline
           or
-          parameterize
           quote
           unless
           when))

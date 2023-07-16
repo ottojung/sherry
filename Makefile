@@ -21,7 +21,7 @@ build: $(SUBMODULES)
 
 install: build
 	guile --r7rs -L src -s src/sherry/main.sld \
-		install-program \
+		install program \
 		--prefix-share $(PREFIXSHARE) \
 		--prefix-bin $(PREFIXBIN) \
 

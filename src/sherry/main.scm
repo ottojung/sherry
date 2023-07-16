@@ -6,15 +6,15 @@
 (with-cli
  (OPT* COMMAND
        COMMAND : --help
-       /      infer-license DASH? <filepath>
-       /      update-license UPDATEOPT* DASH? <filepath>
-       /      minify-license MINIFYOPT* DASH? <filepath>
-       /      get-modification-years DASH? <filepath>
-       /      get-dependencies DASH? <filepath>
-       /      get-exports DASH? <filepath>
-       /      get-source-type DASH? <filepath>
-       /      create-file DASH? <export-name>
-       /      install-program INSTALLOPT*
+       /      infer license DASH? <filepath>
+       /      update license UPDATEOPT* DASH? <filepath>
+       /      minify license MINIFYOPT* DASH? <filepath>
+       /      get modification years DASH? <filepath>
+       /      get dependencies DASH? <filepath>
+       /      get exports DASH? <filepath>
+       /      get source type DASH? <filepath>
+       /      create file DASH? <export-name>
+       /      install program INSTALLOPT*
        /      --version
        DASH : --
        MINIFYOPT : --print
@@ -54,23 +54,23 @@
  (with-properties
   :for-everything
   (cond
-   (infer-license
+   ((and infer license)
     (infer-file-license/print <filepath>))
-   (update-license
+   ((and update license)
     (update-file-license/overwrite --if-exists --all-years <filepath>))
-   (minify-license
+   ((and minify license)
     (minify-license/overwrite --print <filepath>))
-   (get-modification-years
+   ((and get modification years)
     (get-file-modification-years/print <filepath>))
-   (get-dependencies
+   ((and get dependencies)
     (get-file-dependencies/print <filepath>))
-   (get-exports
+   ((and get exports)
     (get-file-exports/print <filepath>))
-   (get-source-type
+   ((and get source type)
     (get-file-source-type/print <filepath>))
-   (create-file
+   ((and create file)
     (create-file-by-name/print <export-name>))
-   (install-program
+   ((and install program)
     (install-guile-program
      (map cons (or <binary-name...> '()) (or <filepath-of-main...> '()))
      <project-name>

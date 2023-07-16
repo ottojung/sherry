@@ -1,6 +1,6 @@
 #! /bin/sh
 
-RESULT=$(guile --r7rs -L src -s src/sherry/main.sld --quiet get-exports -- tests/data/testfile1.scm)
+RESULT=$(guile --r7rs -L src -s src/sherry/main.sld --quiet get exports -- tests/data/testfile1.scm)
 
 case "$RESULT" in
     "(make-yearsrange yearsrange? yearsrange-start yearsrange-end)")
