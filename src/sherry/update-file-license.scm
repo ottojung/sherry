@@ -4,6 +4,7 @@
 (define-module (sherry update-file-license)
   :export (update-file-license update-file-license/overwrite)
   :use-module ((euphrates properties) :select (set-property!))
+  :use-module ((euphrates raisu) :select (raisu))
   :use-module ((sherry file-license-exists-huh) :select (file-license-exists?))
   :use-module ((sherry file-modification-years) :select (file-modification-years))
   :use-module ((sherry infer-file-license) :select (infer-file-license))
@@ -33,6 +34,9 @@
     (log-info "Target file ~s does not have a license header" filepath))
 
   (define license (infer-file-license filepath))
+
+  (unless license
+    (raisu 'cannot-infer-the-license filepath))
 
   (define years (license-years license))
 

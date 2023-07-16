@@ -7,6 +7,8 @@
   :use-module ((euphrates file-or-directory-exists-q) :select (file-or-directory-exists?))
   :use-module ((euphrates properties) :select (with-properties))
   :use-module ((euphrates raisu) :select (raisu))
+  :use-module ((euphrates stringf) :select (stringf))
+  :use-module ((sherry create-file) :select (create-file-by-name))
   :use-module ((sherry get-file-dependencies) :select (get-file-dependencies/print))
   :use-module ((sherry get-file-exports) :select (get-file-exports/print))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years/print))
@@ -29,6 +31,7 @@
     /      get-dependencies DASH? <filepath>
     /      get-exports DASH? <filepath>
     /      get-source-type DASH? <filepath>
+    /      create-file DASH? <export-name>
     /      install-program INSTALLOPT*
     /      --version
     DASH : --
@@ -47,6 +50,8 @@
 
    :default (--just-current-year #t)
    :exclusive (--just-current-year --all-years)
+
+   :help (create-file (stringf "Create a new file that exports ~s. Note that we only create r7rs files currently." (quote <export-name>)))
 
    (when --help
      (define-cli:show-help)
@@ -77,6 +82,8 @@
       (get-file-exports/print <filepath>))
      (get-source-type
       (get-file-source-type/print <filepath>))
+     (create-file
+      (create-file-by-name <export-name>))
      (install-program
       (install-guile-program
        (map cons (or <binary-name...> '()) (or <filepath-of-main...> '()))

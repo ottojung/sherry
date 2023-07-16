@@ -3,12 +3,11 @@
 
 (define-module (sherry infer-file-license)
   :export (infer-file-license infer-file-license/print)
-  :use-module ((euphrates directory-files) :select (directory-files))
   :use-module ((euphrates list-and-map) :select (list-and-map))
   :use-module ((euphrates list-map-first) :select (list-map-first))
-  :use-module ((euphrates path-get-dirname) :select (path-get-dirname))
   :use-module ((euphrates string-null-or-whitespace-p) :select (string-null-or-whitespace?))
   :use-module ((sherry file-lines) :select (file-lines))
+  :use-module ((sherry file-neighbours) :select (file-neighbours))
   :use-module ((sherry get-file-modification-years) :select (get-file-modification-years))
   :use-module ((sherry license) :select (display-license license-author license-text make-license))
   :use-module ((sherry licensedfile) :select (file-license))
@@ -20,14 +19,16 @@
   (define _1
     (log-info "Trying to infer the license from the neighbours of ~s." filepath))
   (define neighbours
-    (map car (directory-files (path-get-dirname filepath))))
+    (file-neighbours filepath))
   (define found
     (list-map-first file-license #f neighbours))
+  (define years
+    (get-file-modification-years filepath))
 
   (and found
        (make-license
         filepath
-        (get-file-modification-years filepath)
+        years
         (license-author found)
         (license-text found))))
 
