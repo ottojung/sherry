@@ -1,7 +1,9 @@
 
 (define-library
   (sherry create-file)
-  (export create-file-by-name)
+  (export
+    create-file-by-name
+    create-file-by-name/print)
   (import (only (euphrates comp) appcomp))
   (import
     (only (euphrates list-find-first)

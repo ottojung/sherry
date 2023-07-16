@@ -64,7 +64,7 @@
      (get-source-type
       (get-file-source-type/print <filepath>))
      (create-file
-      (create-file-by-name <export-name>))
+      (create-file-by-name/print <export-name>))
      (install-program
       (install-guile-program
        (map cons (or <binary-name...> '()) (or <filepath-of-main...> '()))

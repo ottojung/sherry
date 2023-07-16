@@ -16,7 +16,8 @@
   (import (only (euphrates raisu) raisu))
   (import (only (euphrates stringf) stringf))
   (import
-    (only (sherry create-file) create-file-by-name))
+    (only (sherry create-file)
+          create-file-by-name/print))
   (import
     (only (sherry get-file-dependencies)
           get-file-dependencies/print))
