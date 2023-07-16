@@ -34,7 +34,7 @@
  :default (--just-current-year #t)
  :exclusive (--just-current-year --all-years)
 
- :help (create-file (stringf "Create a new file that exports ~s. Note that we only create r7rs files currently." (quote <export-name>)))
+ :help (create-file (stringf "Create a new file that exports ~s." (quote <export-name>)))
  :help (--quiet "Only print fatal errors.")
 
  (when --help
