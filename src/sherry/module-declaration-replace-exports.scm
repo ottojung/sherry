@@ -18,9 +18,12 @@
    ((equal? 'define-library first) ;; r7rs
     (map
      (lambda (tuple)
-       (define type (car tuple))
-       (if (equal? 'export type)
-           (cons 'export new-exports)
+       (if (pair? tuple)
+           (let ()
+             (define type (car tuple))
+             (if (equal? 'export type)
+                 (cons 'export new-exports)
+                 tuple))
            tuple))
      decl))
    (else

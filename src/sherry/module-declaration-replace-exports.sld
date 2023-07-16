@@ -20,6 +20,7 @@
           map
           null?
           or
+          pair?
           quote))
   (cond-expand
     (guile (import (only (srfi srfi-1) first)))
