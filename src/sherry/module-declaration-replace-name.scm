@@ -3,9 +3,24 @@
 
 (define-module (sherry module-declaration-replace-name)
   :export (module-declaration-replace-name)
+  :use-module ((euphrates irregex) :select (irregex-replace/all))
+  :use-module ((euphrates list-last) :select (list-last))
   :use-module ((euphrates list-replace-last) :select (list-replace-last))
   :use-module ((euphrates raisu) :select (raisu))
+  :use-module ((euphrates tilda-a) :select (~a))
   )
+
+(define (replace-all-strings current-name new-name decl)
+  (define current-name/s (~a current-name))
+  (define new-name/s (~a new-name))
+
+  (let loop ((decl decl))
+    (cond
+     ((string? decl)
+      (irregex-replace/all (list 'seq current-name/s) decl new-name/s))
+     ((pair? decl)
+      (cons (loop (car decl)) (loop (cdr decl))))
+     (else decl))))
 
 (define (module-declaration-replace-name new-name decl)
   (define first (car decl))
@@ -15,7 +30,10 @@
         )
     (let ()
       (define current-full-name (cadr decl))
+      (define current-name (list-last current-full-name))
       (define new-full-name (list-replace-last new-name current-full-name))
-      (cons first (cons new-full-name (cddr decl)))))
+      (replace-all-strings
+       current-name new-name
+       (cons first (cons new-full-name (cddr decl))))))
    (else
     (raisu 'unrecognized-declaration-type first))))
