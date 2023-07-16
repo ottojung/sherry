@@ -36,6 +36,7 @@
   (import
     (only (sherry install-guile-program)
           install-guile-program))
+  (import (only (sherry log-level-p) log-level/p))
   (import
     (only (sherry minify-license)
           minify-license/overwrite))
@@ -50,6 +51,7 @@
           cons
           define
           else
+          if
           map
           newline
           or

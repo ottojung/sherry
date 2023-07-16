@@ -3,8 +3,8 @@
 
 (define (main)
   (with-cli
-   (MAIN
-    MAIN : --help
+   (OPT* COMMAND
+    COMMAND : --help
     /      infer-license DASH? <filepath>
     /      update-license UPDATEOPT* DASH? <filepath>
     /      minify-license MINIFYOPT* DASH? <filepath>
@@ -25,6 +25,7 @@
     /            --src <dirpath-of-src>
     /            --prefix-share <prefix-share>
     /            --prefix-bin <prefix-bin>
+    OPT  : --quiet
     )
 
    :synonym (--version -v version)
@@ -33,6 +34,7 @@
    :exclusive (--just-current-year --all-years)
 
    :help (create-file (stringf "Create a new file that exports ~s. Note that we only create r7rs files currently." (quote <export-name>)))
+   :help (--quiet "Only print fatal errors.")
 
    (when --help
      (define-cli:show-help)
@@ -45,6 +47,8 @@
    (when <filepath>
      (unless (file-or-directory-exists? <filepath>)
        (raisu 'target-file-does-not-exist)))
+
+   (log-level/p (if --quiet 'quiet 'normal))
 
    (with-properties
     :for-everything
