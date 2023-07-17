@@ -35,6 +35,8 @@
     (only (sherry module-declaration-replace-name)
           module-declaration-replace-name))
   (import
+    (only (sherry pretty-print) pretty-print))
+  (import
     (only (sherry update-file-license)
           update-file-license/overwrite))
   (import
@@ -59,7 +61,6 @@
   (import (only (scheme write) display write))
   (cond-expand
     (guile (import (only (guile) include-from-path))
-           (import (only (ice-9 pretty-print) pretty-print))
            (begin
              (include-from-path "sherry/create-file.scm")))
     (else (include "create-file.scm"))))

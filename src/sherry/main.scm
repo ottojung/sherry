@@ -13,6 +13,7 @@
        /      get dependencies DASH? <filepath>
        /      get exports DASH? <filepath>
        /      get source type DASH? <filepath>
+       /      r7rs-library to r7rs-program DASH? <filepath>
        /      create file DASH? <export-name>
        /      install program INSTALLOPT*
        /      --version
@@ -68,6 +69,8 @@
     (get-file-exports/print <filepath>))
    ((and get source type)
     (get-file-source-type/print <filepath>))
+   ((and r7rs-library to r7rs-program)
+    (r7rslibrary->r7rsprogram <filepath>))
    ((and create file)
     (create-file-by-name/print <export-name>))
    ((and install program)

@@ -41,6 +41,9 @@
     (only (sherry minify-license)
           minify-license/overwrite))
   (import
+    (only (sherry r7rslibrary-to-r7rsprogram)
+          r7rslibrary->r7rsprogram))
+  (import
     (only (sherry update-file-license)
           update-file-license/overwrite))
   (import
