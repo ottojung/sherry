@@ -6,7 +6,9 @@
 (with-cli
  (MAIN
   MAIN : OPT* COMMAND
-  COMMAND : --help
+  /      --help
+  /      --version
+  COMMAND :
   /      infer license DASH? <filepath>
   /      update license UPDATEOPT* DASH? <filepath>
   /      minify license MINIFYOPT* DASH? <filepath>
@@ -17,7 +19,6 @@
   /      r7rs-library to r7rs-program DASH? <filepath>
   /      create file DASH? <export-name>
   /      install program INSTALLOPT*
-  /      --version
   DASH : --
   MINIFYOPT : --print
   UPDATEOPT : --if-exists
