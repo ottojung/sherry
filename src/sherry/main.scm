@@ -4,31 +4,32 @@
 (current-program-path/p "sherry")
 
 (with-cli
- (OPT* COMMAND
-       COMMAND : --help
-       /      infer license DASH? <filepath>
-       /      update license UPDATEOPT* DASH? <filepath>
-       /      minify license MINIFYOPT* DASH? <filepath>
-       /      get modification years DASH? <filepath>
-       /      get dependencies DASH? <filepath>
-       /      get exports DASH? <filepath>
-       /      get source type DASH? <filepath>
-       /      r7rs-library to r7rs-program DASH? <filepath>
-       /      create file DASH? <export-name>
-       /      install program INSTALLOPT*
-       /      --version
-       DASH : --
-       MINIFYOPT : --print
-       UPDATEOPT : --if-exists
-       /           --all-years
-       /           --just-current-year
-       INSTALLOPT : --main <filepath-of-main...> --binary-name <binary-name...>
-       /            --project-name <project-name>
-       /            --src <dirpath-of-src>
-       /            --prefix-share <prefix-share>
-       /            --prefix-bin <prefix-bin>
-       OPT  : --quiet
-       )
+ (MAIN
+  MAIN : OPT* COMMAND
+  COMMAND : --help
+  /      infer license DASH? <filepath>
+  /      update license UPDATEOPT* DASH? <filepath>
+  /      minify license MINIFYOPT* DASH? <filepath>
+  /      get modification years DASH? <filepath>
+  /      get dependencies DASH? <filepath>
+  /      get exports DASH? <filepath>
+  /      get source type DASH? <filepath>
+  /      r7rs-library to r7rs-program DASH? <filepath>
+  /      create file DASH? <export-name>
+  /      install program INSTALLOPT*
+  /      --version
+  DASH : --
+  MINIFYOPT : --print
+  UPDATEOPT : --if-exists
+  /           --all-years
+  /           --just-current-year
+  INSTALLOPT : --main <filepath-of-main...> --binary-name <binary-name...>
+  /            --project-name <project-name>
+  /            --src <dirpath-of-src>
+  /            --prefix-share <prefix-share>
+  /            --prefix-bin <prefix-bin>
+  OPT  : --quiet
+  )
 
  :synonym (--version -v version)
 
