@@ -7,12 +7,15 @@
   (define decl (or (file-module-declaration source-path)
                    (file-module-declaration lib-path)))
 
+  (define (reducer tuple)
+    (and (pair? tuple)
+         (or (equal? 'import (car tuple))
+             (and (equal? 'cond-expand (car tuple))
+                  (list-and-map reducer (cdr tuple))
+                  (cdr tuple)))))
+
   (define reduced
-    (filter
-     (lambda (tuple)
-       (and (pair? tuple)
-            (equal? 'import (car tuple))))
-     decl))
+    (filter reducer decl))
 
   (define current-text
     (read-string-file source-path))

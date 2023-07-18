@@ -3,6 +3,8 @@
   (sherry r7rslibrary-to-r7rsprogram)
   (export r7rslibrary->r7rsprogram)
   (import
+    (only (euphrates list-and-map) list-and-map))
+  (import
     (only (euphrates path-replace-extension)
           path-replace-extension))
   (import
@@ -18,6 +20,7 @@
           and
           begin
           car
+          cdr
           cond-expand
           define
           equal?
