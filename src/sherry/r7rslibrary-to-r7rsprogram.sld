@@ -3,8 +3,6 @@
   (sherry r7rslibrary-to-r7rsprogram)
   (export r7rslibrary->r7rsprogram)
   (import
-    (only (euphrates file-delete) file-delete))
-  (import
     (only (euphrates path-replace-extension)
           path-replace-extension))
   (import
@@ -20,16 +18,19 @@
           and
           begin
           car
+          cond-expand
           define
           equal?
-          for-each
           lambda
           newline
+          not
           null?
           or
           pair?
+          quasiquote
           quote
-          unless))
+          unless
+          unquote-splicing))
   (import
     (only (scheme file) call-with-output-file))
   (import (only (scheme write) display))

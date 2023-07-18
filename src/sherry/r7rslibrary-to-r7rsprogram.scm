@@ -23,11 +23,11 @@
       (lambda (p)
         (unless (null? reduced)
           (newline p))
-        (for-each
-         (lambda (line) (pretty-print line p))
-         reduced)
+        (pretty-print
+         `(cond-expand
+           (guile)
+           ((not guile) ,@reduced))
+         p)
         (display current-text p))))
-
-  (file-delete lib-path)
 
   )
