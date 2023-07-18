@@ -20,10 +20,7 @@ build: $(SUBMODULES)
 	sh tests/test-version.sh
 
 install: build
-	guile --r7rs -L src -s src/sherry/main.sld \
-		install program \
-		--prefix-share $(PREFIXSHARE) \
-		--prefix-bin $(PREFIXBIN) \
+	PREFIX=$(PREFIX) guile --r7rs -L src -s src/sherry/main.sld install program
 
 test: build
 	sh scripts/run-tests.sh
