@@ -4,11 +4,17 @@
   (export module-declaration-replace-exports)
   (import (only (euphrates raisu) raisu))
   (import
+    (only (sherry is-guile-decl-huh) is-guile-decl?))
+  (import
+    (only (sherry is-r7rsdecl-decl-huh)
+          is-r7rsdecl-decl?))
+  (import
     (only (scheme base)
           begin
           car
           cdr
           cond
+          cond-expand
           cons
           define
           else
@@ -22,9 +28,6 @@
           or
           pair?
           quote))
-  (cond-expand
-    (guile (import (only (srfi srfi-1) first)))
-    (else (import (only (srfi 1) first))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

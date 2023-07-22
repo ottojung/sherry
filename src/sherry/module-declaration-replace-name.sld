@@ -11,6 +11,11 @@
   (import (only (euphrates raisu) raisu))
   (import (only (euphrates tilda-a) ~a))
   (import
+    (only (sherry is-guile-decl-huh) is-guile-decl?))
+  (import
+    (only (sherry is-r7rsdecl-decl-huh)
+          is-r7rsdecl-decl?))
+  (import
     (only (scheme base)
           begin
           cadr
@@ -18,10 +23,10 @@
           cddr
           cdr
           cond
+          cond-expand
           cons
           define
           else
-          equal?
           let
           list
           or

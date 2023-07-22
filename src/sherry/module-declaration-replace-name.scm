@@ -14,17 +14,17 @@
      (else decl))))
 
 (define (module-declaration-replace-name new-name decl)
-  (define first (car decl))
   (cond
-   ((or (equal? 'define-module first) ;; guile
-        (equal? 'define-library first) ;; r7rs
+   ((or (is-guile-decl? decl)
+        (is-r7rsdecl-decl? decl)
         )
     (let ()
       (define current-full-name (cadr decl))
       (define current-name (list-last current-full-name))
       (define new-full-name (list-replace-last new-name current-full-name))
+      (define first (car decl))
       (replace-all-strings
        current-name new-name
        (cons first (cons new-full-name (cddr decl))))))
    (else
-    (raisu 'unrecognized-declaration-type first))))
+    (raisu 'unrecognized-declaration-type decl))))
