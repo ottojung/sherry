@@ -7,6 +7,7 @@
   (import
     (only (euphrates catchu-case) catchu-case))
   (import (only (euphrates comp) appcomp))
+  (import (only (euphrates debugs) debugs))
   (import
     (only (euphrates list-find-first)
           list-find-first))
@@ -43,6 +44,7 @@
     (only (scheme base)
           begin
           cond
+          cond-expand
           define
           else
           equal?

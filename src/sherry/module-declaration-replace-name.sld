@@ -27,8 +27,12 @@
           cons
           define
           else
+          equal?
+          if
+          lambda
           let
           list
+          map
           or
           pair?
           quote
@@ -36,6 +40,9 @@
   (cond-expand
     (guile (import (only (srfi srfi-1) first)))
     (else (import (only (srfi 1) first))))
+  (cond-expand
+    (guile (import (only (srfi srfi-35) condition)))
+    (else (import (only (srfi 35) condition))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

@@ -30,8 +30,12 @@
      file-module-declaration
      #f (file-neighbours main-filepath)))
 
+  (log-info "Found a neighbour ~s with a module declaration." random-neighbour)
+
   (define type
     (file-source-type random-neighbour))
+
+  (log-info "Its type is ~s." type)
 
   (define neighbours-module
     (file-module-declaration random-neighbour))

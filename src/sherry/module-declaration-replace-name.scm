@@ -14,17 +14,26 @@
      (else decl))))
 
 (define (module-declaration-replace-name new-name decl)
-  (cond
-   ((or (is-guile-decl? decl)
-        (is-r7rsdecl-decl? decl)
-        )
-    (let ()
-      (define current-full-name (cadr decl))
-      (define current-name (list-last current-full-name))
-      (define new-full-name (list-replace-last new-name current-full-name))
-      (define first (car decl))
-      (replace-all-strings
-       current-name new-name
-       (cons first (cons new-full-name (cddr decl))))))
-   (else
-    (raisu 'unrecognized-declaration-type decl))))
+  (if (equal? 'cond-expand (car decl))
+      (cons 'cond-expand
+            (map (lambda (clause)
+                   (define condition (car clause))
+                   (define body (cadr clause)) ;; ASSUMPTION: cond-expand only has declarations
+                   (list condition
+                         (module-declaration-replace-name new-name body)))
+                 (cdr decl)))
+
+      (cond
+       ((or (is-guile-decl? decl)
+            (is-r7rsdecl-decl? decl)
+            )
+        (let ()
+          (define current-full-name (cadr decl))
+          (define current-name (list-last current-full-name))
+          (define new-full-name (list-replace-last new-name current-full-name))
+          (define first (car decl))
+          (replace-all-strings
+           current-name new-name
+           (cons first (cons new-full-name (cddr decl))))))
+       (else
+        (raisu 'unrecognized-declaration-type decl)))))
