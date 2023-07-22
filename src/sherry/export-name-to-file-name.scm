@@ -13,6 +13,7 @@
              (repl "~" "-tilda-")
              (repl "=" "-equal-")
              (repl "/" "-")
+             (repl "*" "-star-")
              ))
 
   (define nodoubles

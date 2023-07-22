@@ -8,7 +8,13 @@
           irregex-replace
           irregex-replace/all))
   (import
-    (only (scheme base) + begin define list quote))
+    (only (scheme base)
+          +
+          begin
+          cond-expand
+          define
+          list
+          quote))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin
