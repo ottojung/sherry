@@ -7,10 +7,9 @@
   (import
     (only (euphrates catchu-case) catchu-case))
   (import (only (euphrates comp) appcomp))
-  (import (only (euphrates debugs) debugs))
   (import
-    (only (euphrates list-find-first)
-          list-find-first))
+    (only (euphrates list-maximal-element-or)
+          list-maximal-element-or))
   (import (only (euphrates raisu) raisu))
   (import
     (only (euphrates read-string-file)
@@ -21,6 +20,9 @@
   (import
     (only (sherry export-name-to-file-name)
           export-name->file-name))
+  (import
+    (only (sherry file-license-exists-huh)
+          file-license-exists?))
   (import
     (only (sherry file-module-declaration)
           file-module-declaration))
@@ -42,12 +44,15 @@
           update-file-license/overwrite))
   (import
     (only (scheme base)
+          <
+          >
           begin
           cond
           cond-expand
           define
           else
           equal?
+          if
           lambda
           let
           list
@@ -61,6 +66,9 @@
   (import
     (only (scheme file) call-with-output-file))
   (import (only (scheme write) display write))
+  (cond-expand
+    (guile (import (only (srfi srfi-1) filter)))
+    (else (import (only (srfi 1) filter))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin

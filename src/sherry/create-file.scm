@@ -25,20 +25,43 @@
   (define current-text
     (read-string-file main-filepath))
 
-  (define random-neighbour
-    (list-find-first
+  (define neighbours-with-declarations
+    (filter
      file-module-declaration
-     #f (file-neighbours main-filepath)))
+     (file-neighbours main-filepath)))
 
-  (log-info "Found a neighbour ~s with a module declaration." random-neighbour)
+  (log-info "Found ~s neighbours with module declarations." neighbours-with-declarations)
+
+  (define (rank-type t)
+    (cond
+     ((equal? 'r7rs/library t) 3)
+     ((equal? 'r7rs/source t) 2)
+     ((equal? 'guile t) 1)
+     ((equal? 'r7rs/program t) 0)
+     (else -1)))
+
+  (define best-neighbour
+    (list-maximal-element-or
+     #f (lambda (a b)
+          (define a-lic (if (file-license-exists? a) 1 0))
+          (define b-lic (if (file-license-exists? b) 1 0))
+          (define a-type (rank-type (file-source-type a)))
+          (define b-type (rank-type (file-source-type b)))
+          (cond
+           ((> a-lic b-lic) #t)
+           ((< a-lic b-lic) #f)
+           (else (> a-type b-type))))
+     neighbours-with-declarations))
+
+  (log-info "Found a neighbour ~s with a module declaration." best-neighbour)
 
   (define type
-    (file-source-type random-neighbour))
+    (file-source-type best-neighbour))
 
   (log-info "Its type is ~s." type)
 
   (define neighbours-module
-    (file-module-declaration random-neighbour))
+    (file-module-declaration best-neighbour))
 
   (define inferred-module
     (appcomp neighbours-module
