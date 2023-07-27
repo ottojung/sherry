@@ -54,6 +54,7 @@
           equal?
           if
           lambda
+          length
           let
           list
           newline

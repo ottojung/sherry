@@ -30,7 +30,8 @@
      file-module-declaration
      (file-neighbours main-filepath)))
 
-  (log-info "Found ~s neighbours with module declarations." neighbours-with-declarations)
+  (log-info "Found ~s neighbours with module declarations."
+            (length neighbours-with-declarations))
 
   (define (rank-type t)
     (cond
