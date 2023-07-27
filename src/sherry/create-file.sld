@@ -21,11 +21,11 @@
     (only (sherry export-name-to-file-name)
           export-name->file-name))
   (import
+    (only (sherry file-effective-module-declaration)
+          file-effective-module-declaration))
+  (import
     (only (sherry file-license-exists-huh)
           file-license-exists?))
-  (import
-    (only (sherry file-module-declaration)
-          file-module-declaration))
   (import
     (only (sherry file-neighbours) file-neighbours))
   (import
@@ -63,6 +63,7 @@
           quote
           string->symbol
           string-append
+          string<?
           unquote))
   (import
     (only (scheme file) call-with-output-file))

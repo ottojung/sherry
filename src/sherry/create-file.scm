@@ -27,7 +27,7 @@
 
   (define neighbours-with-declarations
     (filter
-     file-module-declaration
+     file-effective-module-declaration
      (file-neighbours main-filepath)))
 
   (log-info "Found ~s neighbours with module declarations."
@@ -51,7 +51,11 @@
           (cond
            ((> a-lic b-lic) #t)
            ((< a-lic b-lic) #f)
-           (else (> a-type b-type))))
+           (else
+            (cond
+             ((> a-type b-type) #t)
+             ((< a-type b-type) #f)
+             (else (string<? a b))))))
      neighbours-with-declarations))
 
   (log-info "Found a neighbour ~s with a module declaration." best-neighbour)
@@ -62,7 +66,7 @@
   (log-info "Its type is ~s." type)
 
   (define neighbours-module
-    (file-module-declaration best-neighbour))
+    (file-effective-module-declaration best-neighbour))
 
   (define inferred-module
     (appcomp neighbours-module

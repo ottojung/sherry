@@ -22,6 +22,9 @@
     (only (sherry get-file-dependencies)
           get-file-dependencies/print))
   (import
+    (only (sherry get-file-effective-module-declaration)
+          get-file-effective-module-declaration))
+  (import
     (only (sherry get-file-exports)
           get-file-exports/print))
   (import
@@ -52,6 +55,7 @@
           and
           begin
           cond
+          cond-expand
           cons
           else
           if
