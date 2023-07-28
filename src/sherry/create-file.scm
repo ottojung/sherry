@@ -90,15 +90,13 @@
 
   (cond
    ((equal? type 'guile) 'pass)
-   ((equal? type 'r7rs/library)
+   ((or (equal? type 'r7rs/library)
+        (equal? type 'r7rs/program)
+        (equal? type 'r7rs/source))
     (call-with-output-file
         lib-filepath
       (lambda (p)
         (pretty-print inferred-module p))))
-
-   ((or (equal? type 'r7rs/program)
-        (equal? type 'r7rs/source))
-    (raisu 'unexpected-type-of-neighbours-module type))
 
    (else
     (raisu 'unrecognized-type-of-neighbours-module type)))

@@ -48,7 +48,6 @@
           >
           begin
           cond
-          cond-expand
           define
           else
           equal?
