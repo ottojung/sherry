@@ -23,10 +23,10 @@
           cdr
           cond-expand
           define
+          else
           equal?
           lambda
           newline
-          not
           null?
           or
           pair?

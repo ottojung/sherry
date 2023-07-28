@@ -29,7 +29,7 @@
         (pretty-print
          `(cond-expand
            (guile)
-           ((not guile) ,@reduced))
+           (else ,@reduced))
          p)
         (display current-text p))))
 
