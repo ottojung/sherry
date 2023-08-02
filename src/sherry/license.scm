@@ -50,7 +50,7 @@
                       (cons (make-yearsrange range-start range-end) years)))
                ((string-null? striped)
                 (loop (cdr rest) years))
-               (else (values years (words->string rest))))))))))
+               (else (values (reverse years) (words->string rest))))))))))
 
 
 (define (parse-license-from-lines filepath license-lines)

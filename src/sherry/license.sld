@@ -73,6 +73,7 @@
           or
           parameterize
           quote
+          reverse
           string->number
           string-append
           string-length
