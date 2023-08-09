@@ -13,6 +13,7 @@
              (repl "~" "-tilda-")
              (repl "=" "-equal-")
              (repl "/" "-")
+             (repl "::" "-")
              (repl "*" "-star-")
              ))
 
