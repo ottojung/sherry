@@ -14,6 +14,7 @@
              (repl "=" "-equal-")
              (repl "/" "-")
              (repl "::" "-")
+             (repl ":" "-")
              (repl "*" "-star-")
              ))
 
