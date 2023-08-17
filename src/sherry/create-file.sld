@@ -12,6 +12,9 @@
           list-maximal-element-or))
   (import (only (euphrates raisu) raisu))
   (import
+    (only (euphrates random-variable-name)
+          random-variable-name))
+  (import
     (only (euphrates read-string-file)
           read-string-file))
   (import

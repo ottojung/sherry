@@ -85,7 +85,8 @@
         (pretty-print inferred-module p)
         (newline p))
        (else 'pass))
-      (write `(define (,(string->symbol <export-name>) TODO) TODO) p)
+      (let ((value (random-variable-name 20)))
+        (write `(define ,(string->symbol <export-name>) ,value) p))
       (newline p)))
 
   (cond
