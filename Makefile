@@ -21,7 +21,7 @@ build: $(SUBMODULES)
 
 install: build
 	PREFIX=$(PREFIX) guile --r7rs -L src -s src/sherry/main.sld install program
-	sherry --version 1>/dev/null
+	$(PREFIXBIN)/sherry --version 1>/dev/null
 
 test: build
 	sh scripts/run-tests.sh
