@@ -17,18 +17,42 @@
    (lambda args
      (dprintln "Errored: ~s" args))))
 
-(define (watch-file:loop <filepath>)
-  (define old-time 0)
+
+(define mtime-table
+  (make-hashmap))
+
+
+(define (file-changed? filepath)
+  (define time (file-mtime filepath))
+  (define old-time (hashmap-ref mtime-table filepath 0))
+  (if (equal? time old-time) #f
+      time))
+
+
+(define (any-file-changed? files)
+  (list-or-map file-changed? files))
+
+
+(define (update-file-timestamp! filepath)
+  (define time (file-changed? filepath))
+  (when time
+    (hashmap-set! mtime-table filepath time)))
+
+
+(define (update-files-timestamps! files)
+  (for-each update-file-timestamp! files))
+
+
+(define (watch-file:loop <filepath> files)
   (let loop ()
-    (define time (file-mtime <filepath>))
-    (unless (equal? time old-time)
+    (when (any-file-changed? files)
       (newline (current-error-port))
       (display "------------------------------------------" (current-error-port))
       (newline (current-error-port))
       (display "Reloading..." (current-error-port))
       (newline (current-error-port))
       (load-safely <filepath>)
-      (set! old-time (file-mtime <filepath>))
+      (update-files-timestamps! files)
       (display "Done." (current-error-port))
       (newline (current-error-port))
       (display "------------------------------------------" (current-error-port))
@@ -36,5 +60,17 @@
     (sys-usleep 20000)
     (loop)))
 
+
+
 (define (watch-file <filepath>)
-  (watch-file:loop <filepath>))
+
+  (define-values (scm-path sld-path)
+    (if (string-suffix? ".sld" <filepath>)
+        (let ((scm (path-replace-extension <filepath> ".scm")))
+          (unless (file-or-directory-exists? scm)
+            (log-error "Expected ~s file to exist." scm)
+            (exit 1))
+          (values scm <filepath>))
+        (values <filepath> (path-replace-extension <filepath> ".sld"))))
+
+  (watch-file:loop sld-path (list scm-path sld-path)))
