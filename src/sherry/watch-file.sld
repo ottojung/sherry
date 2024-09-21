@@ -9,16 +9,16 @@
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
   (import
-    (only (euphrates hashmap)
-          hashmap-ref
-          hashmap-set!
-          make-hashmap))
-  (import
     (only (euphrates list-or-map) list-or-map))
   (import
     (only (euphrates path-replace-extension)
           path-replace-extension))
+  (import
+    (only (euphrates properties) set-property!))
   (import (only (euphrates sys-usleep) sys-usleep))
+  (import
+    (only (sherry file-modification-time)
+          file:modification-time))
   (import
     (only (sherry fix-imports-generic)
           fix-imports/generic))

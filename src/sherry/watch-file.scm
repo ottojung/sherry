@@ -18,13 +18,9 @@
      (dprintln "Errored: ~s" args))))
 
 
-(define mtime-table
-  (make-hashmap))
-
-
 (define (file-changed? filepath)
   (define time (file-mtime filepath))
-  (define old-time (hashmap-ref mtime-table filepath 0))
+  (define old-time (file:modification-time filepath))
   (if (equal? time old-time) #f
       time))
 
@@ -36,7 +32,7 @@
 (define (update-file-timestamp! filepath)
   (define time (file-changed? filepath))
   (when time
-    (hashmap-set! mtime-table filepath time)))
+    (set-property! (file:modification-time filepath) time)))
 
 
 (define (update-files-timestamps! files)
