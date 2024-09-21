@@ -18,25 +18,12 @@
      (dprintln "Errored: ~s" args))))
 
 
-(define (file-changed? filepath)
-  (define time (file-mtime filepath))
-  (define old-time (file:modification-time filepath))
-  (if (equal? time old-time) #f
-      time))
-
-
 (define (any-file-changed? files)
-  (list-or-map file-changed? files))
-
-
-(define (update-file-timestamp! filepath)
-  (define time (file-changed? filepath))
-  (when time
-    (set-property! (file:modification-time filepath) time)))
+  (list-or-map file:externally-modified? files))
 
 
 (define (update-files-timestamps! files)
-  (for-each update-file-timestamp! files))
+  (for-each file:modification-time:update! files))
 
 
 (define (watch-file:loop <filepath> files)

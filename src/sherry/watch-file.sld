@@ -4,7 +4,6 @@
   (export watch-file)
   (import (only (euphrates catch-any) catch-any))
   (import (only (euphrates dprintln) dprintln))
-  (import (only (euphrates file-mtime) file-mtime))
   (import
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
@@ -13,12 +12,13 @@
   (import
     (only (euphrates path-replace-extension)
           path-replace-extension))
-  (import
-    (only (euphrates properties) set-property!))
   (import (only (euphrates sys-usleep) sys-usleep))
   (import
-    (only (sherry file-modification-time)
-          file:modification-time))
+    (only (sherry file-externally-modified-huh)
+          file:externally-modified?))
+  (import
+    (only (sherry file-modification-time-update-bang)
+          file:modification-time:update!))
   (import
     (only (sherry fix-imports-generic)
           fix-imports/generic))
@@ -30,7 +30,6 @@
           current-error-port
           define
           define-values
-          equal?
           for-each
           if
           lambda
