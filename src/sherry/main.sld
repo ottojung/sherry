@@ -55,7 +55,6 @@
           and
           begin
           cond
-          cond-expand
           cons
           else
           if
@@ -67,9 +66,6 @@
           when))
   (import (only (scheme process-context) exit))
   (import (only (scheme write) display))
-  (cond-expand
-    (guile (import (only (srfi srfi-42) :)))
-    (else (import (only (srfi 42) :))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (begin (include-from-path "sherry/main.scm")))
