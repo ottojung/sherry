@@ -20,6 +20,7 @@
   /      r7rs-library to r7rs-program DASH? <filepath>
   /      create file DASH? <export-name>
   /      install program INSTALLOPT*
+  /      watch <filepath>
   DASH : --
   MINIFYOPT : --print
   UPDATEOPT : --if-exists
@@ -85,6 +86,8 @@
      <dirpath-of-src>
      <prefix-share>
      <prefix-bin>))
+   ((and watch)
+    (watch-file <filepath>))
    (else
     (raisu 'unrecognized-cli-args
            "What are these CLI options?!")))))

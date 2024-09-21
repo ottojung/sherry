@@ -49,6 +49,7 @@
   (import
     (only (sherry update-file-license)
           update-file-license/overwrite))
+  (import (only (sherry watch-file) watch-file))
   (import
     (only (scheme base)
           /

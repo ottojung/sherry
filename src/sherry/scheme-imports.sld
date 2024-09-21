@@ -134,6 +134,8 @@
   (import
     (only (sherry parse-r7rsdecl) parse-r7rsdecl))
   (import
+    (only (sherry pretty-print) pretty-print))
+  (import
     (only (sherry r7rsdecl-get-exports)
           r7rsdecl-get-exports))
   (import
@@ -1621,7 +1623,6 @@
   (cond-expand
     (guile (import
              (only (srfi srfi-42)
-                   :
                    :-dispatch-ref
                    :-dispatch-set!
                    :char-range
@@ -1660,7 +1661,6 @@
                    vector-of-length-ec)))
     (else (import
             (only (srfi 42)
-                  :
                   :-dispatch-ref
                   :-dispatch-set!
                   :char-range
@@ -2113,6 +2113,16 @@
                   string->keyword))))
   (cond-expand
     (guile (import (only (guile) include-from-path))
+           (import
+             (only (guile)
+                   readlink
+                   open
+                   O_RDONLY
+                   with-output-to-string
+                   chdir
+                   open-file
+                   sort
+                   with-input-from-string))
            (begin
              (include-from-path "sherry/scheme-imports.scm")))
     (else (include "scheme-imports.scm"))))
