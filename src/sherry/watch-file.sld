@@ -19,14 +19,10 @@
   (import
     (only (sherry file-modification-time-update-bang)
           file:modification-time:update!))
-  (import
-    (only (sherry fix-imports-generic)
-          fix-imports/generic))
   (import (only (sherry log) log-error))
   (import
     (only (scheme base)
           begin
-          cond-expand
           current-error-port
           define
           define-values
@@ -48,7 +44,9 @@
   (cond-expand
     (guile (import (only (guile) include-from-path))
            (import
-             (only (system base compile) compile-file))
+             (only (system base compile)
+                   compile-file
+                   compiled-file-name))
            (begin
              (include-from-path "sherry/watch-file.scm")))
     (else (include "watch-file.scm"))))
