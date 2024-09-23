@@ -23,6 +23,10 @@ install: build
 	PREFIX=$(PREFIX) guile --r7rs -L src -s src/sherry/main.sld install program --project-name sherry
 	$(PREFIXBIN)/sherry --version 1>/dev/null
 
+uninstall:
+	rm -f -- $(PREFIXBIN)/sherry
+	rm -rf -- $(PREFIXSHARE)/sherry
+
 test: build
 	sh scripts/run-tests.sh
 
