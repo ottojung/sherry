@@ -61,7 +61,7 @@
       (newline (current-error-port))
       (display "------------------------------------------" (current-error-port))
       (newline (current-error-port)))
-    (sys-usleep 20000)
+    (sys-usleep 10000)
     (loop)))
 
 
