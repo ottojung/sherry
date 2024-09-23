@@ -20,7 +20,7 @@ build: $(SUBMODULES)
 	sh tests/test-version.sh
 
 install: build
-	PREFIX=$(PREFIX) guile --r7rs -L src -s src/sherry/main.sld install program
+	PREFIX=$(PREFIX) guile --r7rs -L src -s src/sherry/main.sld install program --project-name sherry
 	$(PREFIXBIN)/sherry --version 1>/dev/null
 
 test: build

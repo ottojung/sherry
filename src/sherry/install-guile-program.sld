@@ -5,10 +5,12 @@
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
+  (import (only (euphrates debugs) debugs))
+  (import
+    (only (euphrates define-pair) define-pair))
   (import
     (only (euphrates file-or-directory-exists-q)
           file-or-directory-exists?))
-  (import (only (euphrates fn-pair) fn-pair))
   (import
     (only (euphrates get-current-directory)
           get-current-directory))

@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2023  Otto Jung
+;;;; Copyright (C) 2023, 2024  Otto Jung
 ;;;; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the License. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (define (infer-main-binary-name dirpath-of-src project-name)
@@ -24,11 +24,14 @@
 
   (list (cons project-name
               (or (try-name "main.sld")
-                  (try-name "main.scm")
                   (try-name "main.rkt")
+                  (try-name "main.scm")
                   (try-name (string-append project-name ".sld"))
+                  (try-name (string-append project-name ".rkt"))
                   (try-name (string-append project-name ".scm"))
-                  (try-name (string-append project-name ".rkt"))))))
+                  (raisu 'could-not-find-main-scm
+                         "Could not find main executable."
+                         dirpath-of-src project-name)))))
 
 (define (infer-prefix)
   (or (system-environment-get "PREFIX")
@@ -42,6 +45,30 @@
 
 (define (infer-prefix-bin)
   (append-posix-path (infer-prefix) "bin"))
+
+(define (make-bin dirpath-of-src install-prefix-bin share-target binary-name+filepath-of-main)
+  (debugs binary-name+filepath-of-main)
+
+  (define-pair (binary-name filepath-of-main)
+    binary-name+filepath-of-main)
+
+  (define relative-filepath-of-main (remove-common-prefix filepath-of-main dirpath-of-src))
+  (define bin-target (append-posix-path install-prefix-bin binary-name))
+  (define main-target (append-posix-path share-target relative-filepath-of-main))
+
+  (call-with-output-file
+      bin-target
+    (lambda (p)
+      (display "#! /bin/sh" p) (newline p)
+      (display "exec guile --r7rs -L " p)
+      (write share-target p)
+      (display " -s " p)
+      (write main-target p)
+      (display " " p)
+      (write "$@" p)
+      (newline p)))
+
+  (run-syncproc "chmod" "+x" "--" bin-target))
 
 (define (install-guile-program binary-names+filepaths-of-main/0 project-name/0 dirpath-of-src/0 install-prefix-share/0 install-prefix-bin/0)
   (define dirpath-of-src
@@ -72,23 +99,5 @@
     (raisu 'copy-failed "Failing the process because copying the files failed"))
 
   (for-each
-   (fn-pair
-    (binary-name filepath-of-main)
-    (define relative-filepath-of-main (remove-common-prefix filepath-of-main dirpath-of-src))
-    (define bin-target (append-posix-path install-prefix-bin binary-name))
-    (define main-target (append-posix-path share-target relative-filepath-of-main))
-
-    (call-with-output-file
-        bin-target
-      (lambda (p)
-        (display "#! /bin/sh" p) (newline p)
-        (display "exec guile --r7rs -L " p)
-        (write share-target p)
-        (display " -s " p)
-        (write main-target p)
-        (display " " p)
-        (write "$@" p)
-        (newline p)))
-
-    (run-syncproc "chmod" "+x" "--" bin-target))
+   (lambda (p) (make-bin dirpath-of-src install-prefix-bin share-target p))
    binary-names+filepaths-of-main))
