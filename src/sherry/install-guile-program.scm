@@ -47,8 +47,6 @@
   (append-posix-path (infer-prefix) "bin"))
 
 (define (make-bin dirpath-of-src install-prefix-bin share-target binary-name+filepath-of-main)
-  (debugs binary-name+filepath-of-main)
-
   (define-pair (binary-name filepath-of-main)
     binary-name+filepath-of-main)
 

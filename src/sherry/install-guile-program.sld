@@ -5,7 +5,6 @@
   (import
     (only (euphrates append-posix-path)
           append-posix-path))
-  (import (only (euphrates debugs) debugs))
   (import
     (only (euphrates define-pair) define-pair))
   (import
