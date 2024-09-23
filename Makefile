@@ -20,7 +20,9 @@ build: $(SUBMODULES)
 	sh tests/test-version.sh
 
 install: build
+	sh scripts/alpha-convert-euphrates.sh
 	PREFIX=$(PREFIX) guile --r7rs -L src -s src/sherry/main.sld install program --project-name sherry
+	sh scripts/reset-code.sh
 	$(PREFIXBIN)/sherry --version 1>/dev/null
 
 uninstall:
