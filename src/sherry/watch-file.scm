@@ -12,7 +12,8 @@
           (values scm <filepath>))
         (values <filepath> (path-replace-extension <filepath> ".sld"))))
 
-  (compile-file sld-path))
+  (parameterize ((default-optimization-level 0))
+    (compile-file sld-path)))
 
 (define (load-procedure <filepath>)
   ;; (fix-imports/generic #f <filepath>)

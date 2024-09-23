@@ -32,6 +32,7 @@
           let
           list
           newline
+          parameterize
           unless
           values
           when))
@@ -45,6 +46,7 @@
     (guile (import (only (guile) include-from-path))
            (import
              (only (system base compile)
+                   default-optimization-level
                    compile-file
                    compiled-file-name))
            (begin
