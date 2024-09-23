@@ -14,12 +14,15 @@
           path-replace-extension))
   (import (only (euphrates sys-usleep) sys-usleep))
   (import
+    (only (euphrates with-run-time-estimate)
+          with-run-time-estimate))
+  (import
     (only (sherry file-externally-modified-huh)
           file:externally-modified?))
   (import
     (only (sherry file-modification-time-update-bang)
           file:modification-time:update!))
-  (import (only (sherry log) log-error))
+  (import (only (sherry log) log-error log-info))
   (import
     (only (scheme base)
           begin

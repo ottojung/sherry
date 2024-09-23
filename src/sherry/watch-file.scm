@@ -17,8 +17,19 @@
 
 (define (load-procedure <filepath>)
   ;; (fix-imports/generic #f <filepath>)
-  (maybe-compile <filepath>)
-  (load <filepath>))
+  (define comptime
+    (with-run-time-estimate
+     (maybe-compile <filepath>)))
+
+  (log-info "Compiled in ~s seconds." comptime)
+
+  (define runtime
+    (with-run-time-estimate
+     (load <filepath>)))
+
+  (log-info "Execution took ~s seconds." runtime)
+
+  (values))
 
 (define (load-safely <filepath>)
   (catch-any
